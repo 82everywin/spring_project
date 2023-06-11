@@ -1,10 +1,7 @@
 package org.study.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.study.commons.constants.RegionType;
 import org.study.commons.constants.Status;
 
@@ -59,6 +56,7 @@ public class Studies extends BaseEntity {
     private String sigugun; // 시구군
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name="userNo")
     private User user;
 

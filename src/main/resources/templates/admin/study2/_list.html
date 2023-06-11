@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="lists">
+    <form method="post" th:action="@{/admin/study}" autocomplete="off" target="ifrmProcess">
+        <table class="table-rows">
+            <thead>
+            <tr>
+                <th width="30">
+                    <input type="checkbox" class="checkall" id="checkall" data-target-name="num">
+                    <label for="checkall"></label>
+                </th>
+                <th nowrap width="100">신청번호</th>
+                <th nowrap width="100">스터디코드</th>
+                <th nowrap width="150">카테고리</th>
+                <th nowrap width="120">처리상태</th>
+                <th nowrap width="120">인원수</th>
+                <th nowrap width="150">스터디구분</th>
+                <th nowrap>한줄소개글</th>
+                <th width="120"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item, status : ${items}" th:object="${item}">
+                <td align="center">
+                            <span>
+                                <input type="checkbox" name="num" th:value="${status.index}" th:id="${'num_' + status.index}">
+                                <label th:for="${'num_' + status.index}"></label>
+                            </span>
+                    <input type="hidden" name="studyNo" th:value="*{studyNo}">
+                </td>
+                <td nowrap align="center" th:text="*{studyNo}"></td>
+                <td nowrap align="center" th:text="*{studyCd}"></td>
+                <td nowrap align="center" th:text="*{category.cateNm}"></td>
+                <td nowrap align="center">
+                    <select name="status">
+                        <option value="APPLY" th:selected="*{status.toString() == 'APPLY'}">신청</option>
+                        <option value="APPROVE" th:selected="*{status.toString() == 'APPROVE'}">승인</option>
+                        <option value="DISAPPROVE" th:selected="*{status.toString() == 'DISAPPROVE'}">미승인</option>
+                    </select>
+                </td>
+                <td nowrap align="center">
+                    <th:block th:if="*{maxMember == 0}">무제한</th:block>
+                    <th:block th:if="*{maxMember > 0}" th:text="*{maxMember + '명'}"></th:block>
+                </td>
+                <td nowrap align="center" th:if="*{regionType.toString() == 'ONLINE'}">온라인</td>
+                <td nowrap align="center" th:unless="*{regionType.toString() == 'ONLINE'}">오프라인   </td>
+                <td th:text="*{simpleIntro}"></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="table-action">
+            <button type="submit" class="btn1" onclick="return confirm('정말 수정하시겠습니까?');">수정하기</button>
+        </div>
+    </form>
+</th:block>
+</html>

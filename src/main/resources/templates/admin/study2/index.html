@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/main}">
+<section layout:fragment="content">
+
+    <nav th:replace="~{admin/study2/_submenu::menus}"></nav>
+
+    <th:block th:replace="~{admin/study2/_search::search}"></th:block>
+
+    <th:block th:replace="~{admin/study2/_list::lists}"></th:block>
+
+    <th:block th:replace="~{commons/pagination::pagination}"></th:block>
+</section>
+</html>

@@ -13,4 +13,6 @@ public class StudySearch {
 
     private String sido;
     private String sigugun;
+
+    private String status;
 }

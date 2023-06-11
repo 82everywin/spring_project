@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <nav th:fragment="menus">
+        <a th:href="@{/admin/study}" class="btn2">
+            <i class="xi-list"></i>
+            전체 목록
+        </a>
+        <a th:href="@{/admin/study?status=APPLY}" class="btn2">
+            <i class="xi-list"></i>
+            신청 목록
+        </a>
+        <a th:href="@{/admin/study?status=APPROVE}" class="btn2">
+            <i class="xi-list"></i>
+            승인 목록
+        </a>
+        <a th:href="@{/admin/study?status=DISAPPROVE}" class="btn2">
+            <i class="xi-list"></i>
+            미승인 목록
+        </a>
+    </nav>
+</html>

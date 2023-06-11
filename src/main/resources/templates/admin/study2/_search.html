@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="search">
+        <form class="search_form" name="frmSearch" method="get" autocomplete="off" th:object="${studySearch}">
+            <dl>
+                <dt>스터디 분류</dt>
+                <dd>
+                    <span th:each="cate, status : ${categories}" th:object="${cate}">
+                        <input type="checkbox" name="cateCd" th:value="*{cateCd}" th:id="${'cateCd_' + status.index}" th:field="${studySearch.cateCd}">
+                        <label th:for="${'cateCd_' + status.index}" th:text="*{cateNm}"></label>
+                    </span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>검색어</dt>
+                <dd>
+                    <input type="text" name="skey" th:field="*{skey}">
+                </dd>
+            </dl>
+            <dl>
+                <dt>처리상태</dt>
+                <dd>
+                    <span>
+                        <input type="radio" name="status" value="APPLY" id="status_apply" th:field="*{status}">
+                        <label for="status_apply">신청</label>
+                    </span>
+                    <span>
+                        <input type="radio" name="status" value="APPROVE" id="status_approve" th:field="*{status}">
+                        <label for="status_approve">승인</label>
+                    </span>
+                    <span>
+                        <input type="radio" name="status" value="DISAPPROVE" id="status_disapprove" th:field="*{status}">
+                        <label for="status_disapprove">미승인</label>
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit">검색하기</button>
+        </form>
+    </th:block>
+</html>

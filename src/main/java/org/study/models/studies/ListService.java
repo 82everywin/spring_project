@@ -38,7 +38,14 @@ public class ListService {
         limit = limit < 1 ? 20 : limit;
 
         /** 검색어 처리 S */
-        andBuilder.and(studies.status.eq(Status.APPROVE)); // 승인된 목록만 조회
+        String status = search.getStatus();
+        if (status == null || status.isBlank()) {
+            andBuilder.and(studies.status.eq(Status.APPROVE)); // 승인된 목록만 조회
+        } else if (!status.equals("ALL")) {
+            // 승인, 미승인 목록 검색 처리
+            andBuilder.and(studies.status.eq(Status.valueOf(status)));
+        }
+
         String sido = search.getSido();
         String sigugun = search.getSigugun();
         String cateCd = search.getCateCd();
@@ -61,6 +68,7 @@ public class ListService {
             andBuilder.and(studies.simpleIntro.contains(skey));
         }
         /** 검색어 처리 E */
+
 
         Sort sort = Sort.by(desc("createdAt"));
 
