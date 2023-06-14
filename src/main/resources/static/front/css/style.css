@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
+::-webkit-scrollbar {  width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #596b99; border-radius: 3px; }
+* { box-sizing: border-box; outline: none; font-family: 'Nanum Gothic', sans-serif; }
+html { font-size: 13px; color: #222; }
+body { margin: 0; }
+ul { list-style: none; margin: 0; padding: 0; }
+li { display: block; }
+dl { display: flex; width: 100%; margin: 0; align-items: center; }
+dt { width: 130px;  }
+dd { width: calc(100% - 130px); padding: 0; margin: 0; }
+a { color:#222; text-decoration: none; }
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"] { border: 1px solid #d5d5d5; height: 35px; width: 100%; padding: 0 20px; }
+input[type="date"] { height: 35px; border: 1px solid #d5d5d5; padding: 0 20px; }
+textarea { border: 1px solid #d5d5d5; width: 100%; resize: none; padding: 20px; min-height: 100px; }
+select { height: 35px; border: 1px solid #d5d5d5; background: #fff; min-width: 130px; }
+input[type='radio'] { display: none; }
+input[type='radio']~label { display: inline-block; padding-left: 25px; padding-right: 15px; min-height: 20px; background:url("../images/common/radio-off.png") no-repeat left center; line-height: 20px; cursor: pointer; margin: 3px 0;}
+input[type='radio']:checked~label { background:url("../images/common/radio-on.png") no-repeat left center; }
+input[type='radio']~label.standalone { padding: 0; height: 20px; width: 20px; }
+
+input[type='checkbox'] { display: none; }
+input[type='checkbox']~label { display: inline-block; padding-left: 25px; padding-right: 15px; min-height: 20px; background:url("../images/common/chk-off.png") no-repeat left center; background-size: 20px; line-height: 20px; cursor: pointer; margin: 3px 0; }
+input[type='checkbox']:checked~label { background:url("../images/common/chk-on.png") no-repeat left center; background-size: 20px; }
+input[type='checkbox']~label.standalone { padding: 0; height: 20px; width: 20px; }
+
+input:read-only, textarea:read-only { background-color: #f8f8f8; }
+select option:disabled { color: red; background-color: #f8f8f8; }
+
+.error { box-shadow: 2px 2px 4px #666; padding: 15px; border-radius: 5px; margin: 5px 0; color: red; font-size: 12px; }
+.dn { display: none !important; }

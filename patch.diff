@@ -1,0 +1,281 @@
+From e242367c1ab6ff2d36063d9795f4b1ad515db145 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=EA=B9=80=EB=9A=9C=EB=A3=A8?=
+ <111275210+w0nderland05@users.noreply.github.com>
+Date: Thu, 13 Apr 2023 21:56:58 +0900
+Subject: [PATCH] =?UTF-8?q?=EC=88=98=EC=A0=95?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../org/study/entities/CommunityPost.java     | 108 +++++++++---------
+ src/main/java/org/study/entities/Study.java   |  12 +-
+ .../org/study/entities/StudyCategory.java     |  19 ++-
+ .../org/study/entities/Study_Category.java    |  22 ----
+ src/main/java/org/study/entities/User.java    |   4 +-
+ .../study/repositories/StudyRepository.java   |   4 +-
+ .../java/org/study/admin/study/StudyTest.java |   1 +
+ 7 files changed, 80 insertions(+), 90 deletions(-)
+ delete mode 100644 src/main/java/org/study/entities/Study_Category.java
+
+diff --git a/src/main/java/org/study/entities/CommunityPost.java b/src/main/java/org/study/entities/CommunityPost.java
+index d0fd6b6..f6ff700 100644
+--- a/src/main/java/org/study/entities/CommunityPost.java
++++ b/src/main/java/org/study/entities/CommunityPost.java
+@@ -1,54 +1,54 @@
+-package org.study.entities;
+-
+-import jakarta.persistence.*;
+-import lombok.*;
+-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+-
+-@Entity
+-@Data
+-@Builder
+-@NoArgsConstructor
+-@AllArgsConstructor
+-@Table(indexes={
+-        @Index(name="idx_user_createdAt", columnList = "createdAt DESC")
+-})
+-<<<<<<< HEAD
+-
+-@EntityListeners(AuditingEntityListener.class)
+-
+-
+-
+-// 게시글 목록 Entity
+-
+-=======
+-@EntityListeners(AuditingEntityListener.class)
+-// 게시글 목록 Entity
+-<<<<<<< HEAD:src/main/java/org/study/entities/CommunityPostList.java
+->>>>>>> 5fd627507ace88f9ef256ba89f5f60c755d41bd9
+-public class CommunityPostList extends BaseEntity {
+-=======
+-public class CommunityPost extends BaseEntity {
+->>>>>>> eea60d6bed283fe24b03f38bf3bf37ac492bc9e7:src/main/java/org/study/entities/CommunityPost.java
+-
+-    @Id @GeneratedValue
+-    @Column(length = 8)
+-    private Long code; // 코드번호
+-
+-    @Column(nullable = false, length = 150)
+-    private String postNm; // 게시글 제목
+-
+-    // 작성자명과 이메일은 매핑으로 가져옴.
+-    // 작성일시와 수정일시는 BaseEntity
+-
+-    @Column(columnDefinition = "int default '0' not null")
+-    private int viewCount; // 조회수
+-
+-    @ManyToOne
+-    @JoinColumn(name = "user_No")
+-    @ToString.Exclude
+-    private User user;
+-
+-    @OneToOne
+-    @JoinColumn(name = "boardNm")
+-    private CommunityBoard category;
+-}
++//package org.study.entities;
++//
++//import jakarta.persistence.*;
++//import lombok.*;
++//import org.springframework.data.jpa.domain.support.AuditingEntityListener;
++//
++//@Entity
++//@Data
++//@Builder
++//@NoArgsConstructor
++//@AllArgsConstructor
++//@Table(indexes={
++//        @Index(name="idx_user_createdAt", columnList = "createdAt DESC")
++//})
++//<<<<<<< HEAD
++//
++//@EntityListeners(AuditingEntityListener.class)
++//
++//
++//
++//// 게시글 목록 Entity
++//
++//=======
++//@EntityListeners(AuditingEntityListener.class)
++//// 게시글 목록 Entity
++//<<<<<<< HEAD:src/main/java/org/study/entities/CommunityPostList.java
++//>>>>>>> 5fd627507ace88f9ef256ba89f5f60c755d41bd9
++//public class CommunityPostList extends BaseEntity {
++//=======
++//public class CommunityPost extends BaseEntity {
++//>>>>>>> eea60d6bed283fe24b03f38bf3bf37ac492bc9e7:src/main/java/org/study/entities/CommunityPost.java
++//
++//    @Id @GeneratedValue
++//    @Column(length = 8)
++//    private Long code; // 코드번호
++//
++//    @Column(nullable = false, length = 150)
++//    private String postNm; // 게시글 제목
++//
++//    // 작성자명과 이메일은 매핑으로 가져옴.
++//    // 작성일시와 수정일시는 BaseEntity
++//
++//    @Column(columnDefinition = "int default '0' not null")
++//    private int viewCount; // 조회수
++//
++//    @ManyToOne
++//    @JoinColumn(name = "user_No")
++//    @ToString.Exclude
++//    private User user;
++//
++//    @OneToOne
++//    @JoinColumn(name = "boardNm")
++//    private CommunityBoard category;
++//}
+diff --git a/src/main/java/org/study/entities/Study.java b/src/main/java/org/study/entities/Study.java
+index 977b6bf..145bb17 100644
+--- a/src/main/java/org/study/entities/Study.java
++++ b/src/main/java/org/study/entities/Study.java
+@@ -8,13 +8,14 @@ import org.study.commons.constants.RegionType;
+ import org.study.commons.constants.Status;
+ 
+ import java.time.LocalDateTime;
++import java.util.List;
+ 
+ @Entity
+ @Data @Builder
+ @NoArgsConstructor
+ @AllArgsConstructor
+ @EntityListeners(AuditingEntityListener.class)
+-public class Study extends BaseEntity {
++public class Study{
+ 
+     @Id
+     @GeneratedValue
+@@ -26,15 +27,11 @@ public class Study extends BaseEntity {
+     @Column(nullable = false)
+     private String category; //카테고리
+ 
+-    /**
+-    @Column(nullable = false)
+-    private String userEmail; //신청자
+-    */
+-
+     @CreatedDate
+     @Column(updatable = false)
+     private LocalDateTime requestDt;//개설신청일시
+ 
++    @Enumerated(EnumType.STRING)
+     @Column(nullable = false)
+     private Status approveStatus =Status.APPLY ; //승인상태 (기본은 승인대기==신청)
+ 
+@@ -59,5 +56,6 @@ public class Study extends BaseEntity {
+     @ManyToOne
+     @JoinColumn(name="user_No")
+     @ToString.Exclude
+-    private User user;  //회원 목록 조회할 때 필요할 듯
++    private User user;  //개설회원 정보
++
+ }
+diff --git a/src/main/java/org/study/entities/StudyCategory.java b/src/main/java/org/study/entities/StudyCategory.java
+index 09d3e3b..bda993b 100644
+--- a/src/main/java/org/study/entities/StudyCategory.java
++++ b/src/main/java/org/study/entities/StudyCategory.java
+@@ -1,7 +1,22 @@
+ package org.study.entities;
+ 
+-public class StudyCategory extends BaseEntity{
++import jakarta.persistence.Column;
++import jakarta.persistence.Entity;
++import jakarta.persistence.GeneratedValue;
++import jakarta.persistence.Id;
+ 
++@Entity
++public class StudyCategory {
++
++    @Id
++    @GeneratedValue
++    private Long scNo;//스터디카테고리 넘버
++
++    @Column(nullable = false)
+     private String scNm; //스터디카테고리명
+-    private  boolean scUse;//스터디카테고리사용여부
++
++    @Column
++    private Boolean scUse; //스터디카테고리 사용여부
++
++
+ }
+diff --git a/src/main/java/org/study/entities/Study_Category.java b/src/main/java/org/study/entities/Study_Category.java
+deleted file mode 100644
+index 96104e0..0000000
+--- a/src/main/java/org/study/entities/Study_Category.java
++++ /dev/null
+@@ -1,22 +0,0 @@
+-package org.study.entities;
+-
+-import jakarta.persistence.Column;
+-import jakarta.persistence.Entity;
+-import jakarta.persistence.GeneratedValue;
+-import jakarta.persistence.Id;
+-
+-@Entity
+-public class Study_Category {
+-
+-    @Id
+-    @GeneratedValue
+-    private Long CategoryNo;
+-
+-    @Column(nullable = false)
+-    private String Category;
+-
+-    @Column
+-    private Boolean isUse;
+-
+-
+-}
+diff --git a/src/main/java/org/study/entities/User.java b/src/main/java/org/study/entities/User.java
+index 90c819d..d0f15fc 100644
+--- a/src/main/java/org/study/entities/User.java
++++ b/src/main/java/org/study/entities/User.java
+@@ -60,8 +60,8 @@ public class User extends BaseEntity{
+     */
+ 
+     @OneToMany(mappedBy="user")
+-    private List<Study> study = new ArrayList<>();
++    private List<Study> studies = new ArrayList<>();
+ 
+     @OneToMany(mappedBy = "user")
+-    private List<CommunityPost> communityPostLists = new ArrayList<>();
++    private List<CommunityPostList.CommunityPost> communityPostLists = new ArrayList<>();
+ }
+diff --git a/src/main/java/org/study/repositories/StudyRepository.java b/src/main/java/org/study/repositories/StudyRepository.java
+index d31a4af..820d30c 100644
+--- a/src/main/java/org/study/repositories/StudyRepository.java
++++ b/src/main/java/org/study/repositories/StudyRepository.java
+@@ -5,10 +5,8 @@ import org.study.entities.Study;
+ 
+ public interface StudyRepository extends JpaRepository<Study,Long> {
+ 
+-<<<<<<< HEAD
++
+     Study findByStudyCode(Long StudyCode);
+ 
+ 
+-=======
+->>>>>>> 5fd627507ace88f9ef256ba89f5f60c755d41bd9
+ }
+diff --git a/src/test/java/org/study/admin/study/StudyTest.java b/src/test/java/org/study/admin/study/StudyTest.java
+index c9c9c53..0683913 100644
+--- a/src/test/java/org/study/admin/study/StudyTest.java
++++ b/src/test/java/org/study/admin/study/StudyTest.java
+@@ -67,6 +67,7 @@ public class StudyTest {
+     public void applySuccess() {
+ 
+ 
++
+     }
+ 
+     @Test
+-- 
+2.38.1.windows.1
+

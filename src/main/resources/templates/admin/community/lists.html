@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/main}">
+<section layout:fragment="content">
+    <nav th:replace="~{admin/community/_submenu::menus}"></nav>
+    <form method="post" th:action="@{/admin/community}">
+        <!-- 카테고리 목록 S -->
+        <div class="post-list">
+            <div class="middle-Title">게시글 목록</div>
+            <table id="list" border="1">
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox">
+                    </th>
+                    <th>코드번호</th>
+                    <th>카테고리</th>
+                    <th>게시글 제목</th>
+                    <th>작성자명</th>
+                    <th>이메일</th>
+                    <th>작성일시</th>
+                    <th>수정일시</th>
+                    <th>조회수</th>
+                    <th>비고</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- <tr th:each="config : ${configs}"> -->
+                <!-- 등록 시 행이 자동 생성하기 위해 추후 구현 -->
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td><!-- DB에서 자동입력 --></td>
+                <td><!-- DB에서 자동입력 --></td>
+                <td><!-- DB에서 자동입력 --></td>
+                <td><!-- DB에서 자동입력 --></td>
+                <td><!-- DB에서 자동입력 --></td>
+                <td><!-- DB에서 자동입력 --></td>
+                <td><!-- DB에서 자동입력 --></td>
+                <td><!-- DB에서 자동입력 --></td>
+                <td>
+                    <button>
+                        <a href="#">게시글보기</a>
+                        <!-- 사용자 페이지 해당 게시글로 이동 -->
+                    </button>
+                </td>
+                </tbody>
+            </table>
+            <button type="button">선택 게시글 삭제</button>
+            <button type="button"><a href="#">수정하기</a></button>
+        </div>
+        <ul class="page-list">
+            <li class="page-link">
+                <a href="?page=1">1</a>
+            </li>
+            <li class="page-link">
+                <a href="?page=1">2</a>
+            </li>
+            <li class="page-link">
+                <a href="?page=1">3</a>
+            </li>
+            <li class="page-link">
+                <a href="?page=1">4</a>
+            </li>
+        </ul>
+        <!-- 카테고리 목록 E -->
+        </body>
+    </form>
+</section>
+</html>

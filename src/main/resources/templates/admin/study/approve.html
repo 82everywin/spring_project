@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/main}">
+<section layout:fragment="content">
+    <nav th:replace="~{admin/study/_submenu::menus}"></nav>
+
+    <form class='form' method="post" th:action="@{/admin/board/save}" autocomplete="off">
+        <th:block th:replace="~{admin/study/_form::form}"></th:block>
+        <button type="submit" class="submit_btn">등록하기</button>
+    </form>
+    <div>
+        <button type="button">수정</button>
+        <button type="button">승인</button>
+        <button type="button">미승인</button>
+    </div>
+</section>
+</html>

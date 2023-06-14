@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/main}">
+<section layout:fragment="content">
+    <nav th:replace="~{admin/study/_submenu::menus}"></nav>
+<table border="1">
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>스터디코드</th>
+        <th>스터디명</th>
+        <th>카테고리</th>
+        <th>회원명</th>
+        <th>이메일</th>
+        <th>개설신청일시</th>
+        <th>승인관리</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <button type="button">처리하기</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</section>
+</html>

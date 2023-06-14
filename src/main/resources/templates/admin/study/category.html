@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/main}">
+<section layout:fragment="content">
+    <nav th:replace="~{admin/study/_submenu::menus}"></nav>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>
+                <input type="checkbox">
+            </th>
+            <th>카테고리명</th>
+            <th>사용여부</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <input type="checkbox">
+            </td>
+            <td></td>
+            <td>
+                <input type="radio" name="use" value="1" id="use_1" checked>
+                <label for="use_1">사용</label>
+                <input type="radio" name="use" value="0" id="use_0" checked>
+                <label for="use_0">미사용</label>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <span>
+        <input type="text" id="text">
+        <label for="text">
+            <button type="submit">등록하기</button>
+        </label>
+    </span>
+</section>
+</html>

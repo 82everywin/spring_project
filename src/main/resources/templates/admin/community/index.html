@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/main}">
+<section layout:fragment="content">
+    <nav th:replace="~{admin/community/_submenu::menus}"></nav>
+    <form method="post" th:action="@{/admin/community}">
+        <!-- 게시판 목록 S -->
+        <div class="category-list">
+            <div class="middle-title">카테고리 목록</div>
+            <table id="list" border="1">
+                <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>게시판ID</th>
+                    <th>게시판명</th>
+                    <th>처리일시</th>
+                    <th>처리자</th>
+                    <th>사용여부</th>
+                    <th>비고</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- <tr th:each="config : ${configs}"> -->
+                <!-- 등록 시 행이 자동 생성하기 위해 추후 구현 -->
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td><!-- DB에서 자동입력 --></td>
+                    <td><!-- DB에서 자동입력 --></td>
+                    <td><!-- DB에서 자동입력 --></td>
+                    <td><!-- DB에서 자동입력 --></td>
+                    <td><!-- DB에서 자동입력 --></td>
+                    <td>
+                        <button>
+                            <a href="#">미리보기</a> <!-- 사용자 페이지 해당 카테고리로 이동 -->
+                        </button>
+                    </td>
+                </tbody>
+            </table>
+            <button type="button">삭제하기</button>
+            <button type="button"><a href="@{/admin/community/update}">수정하기</a></button>
+        </div>
+        <!-- 게시판 목록 E -->
+    </form>
+</section>
+</html>

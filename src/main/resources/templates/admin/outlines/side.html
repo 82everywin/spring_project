@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<aside th:fragment="menus">
+    <a th:href="@{/admin/user}" th:classappend="${menuCode}=='user'? 'on'"><i class="xi-user-o"></i>회원관리</a>
+    <a th:href="@{/admin/study}" th:classappend="${menuCode}=='study'? 'on'"><i class="xi-book"></i>스터디관리</a>
+    <a th:href="@{/admin/community}" th:classappend="${menuCode}=='community'? 'on'"><i class="xi-pen"></i>커뮤니티관리</a>
+    <a th:href="@{/admin/cs}" th:classappend="${menuCode}=='cs'? 'on'"><i class="xi-info"></i>CS관리</a>
+</aside>
+</html>

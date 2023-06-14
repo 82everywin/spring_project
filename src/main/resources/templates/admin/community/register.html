@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/main}">
+<section layout:fragment="content">
+    <nav th:replace="~{admin/community/_submenu::menus}"></nav>
+
+    <form class="form" method="post" th:action="@{/admin/community}" autocomplete="off">
+        <th:block th:replace="~{admin/community/_form::form}"></th:block>
+        <div class="btn">
+        <button type="submit" class="submit_btn">등록하기</button>
+        <button type="button" class="submit_btn" th:href="@{admin/community}">취소하기</button>
+        </div>
+    </form>
+</section>
+</html>
