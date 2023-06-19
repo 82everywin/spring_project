@@ -7,11 +7,12 @@
     <nav th:replace="~{admin/cs/_submenu::menus}"></nav>
     <form method="post" th:action="@{/admin/cs}">
         <div role="region" aria-label="data table" tabindex="0" class="primary">
-            <table id = "list">
+            <table class="table-rows">
                 <thead>
                     <tr>
                         <th>
-                            <input type="checkbox">
+                            <input type="checkbox" class="checkall" id="checkall" data-target-name="code">
+                            <label for="checkall"></label>
                         </th>
                         <th>유입 구분</th>
                         <th>코드번호</th>
@@ -37,7 +38,7 @@
                         <td></td>  <!-- 신고일시 -->
                         <td>
                             <select th:field="*{status}">
-                                <option th:value="CLEAR">처리 완료</option>
+                                <option th: value="CLEAR">처리 완료</option>
                                 <option th:value="READY" selected>처리 대기중</option>
                             </select>
                         </td>  <!-- 처리상태 -->
