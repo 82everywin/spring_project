@@ -8,6 +8,10 @@ public interface PasswordValidator {
     // 비밀번호 유효성 검사
     default boolean checkPassword(String userPw ) {
 
+        // ?= 모든 문자 . = 줄바꿈제외 모든 문자 한개
+        // 소문자 대문자 = [a-zA-Z]
+        // 모든 숫자 = [//d]
+        // 특수문자 한개 =  [//W]
         String passPattern1 = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$";
 
         return userPw.matches(passPattern1);

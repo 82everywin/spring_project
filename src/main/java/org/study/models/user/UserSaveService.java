@@ -28,7 +28,7 @@ public class UserSaveService {
             user.setUserEmail(userJoin.getUserEmail());
             user.setUserPw(userJoin.getUserPw());
             user.setUserNickNm(userJoin.getUserNickNm());
-            user.setCellPhone(userJoin.getCellphone());
+            user.setCellPhone(userJoin.getCellPhone());
         } else { // 회원 정보 추가
             user = UserJoin.of(userJoin);
         }

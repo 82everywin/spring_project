@@ -30,7 +30,7 @@ public class UserJoinService {
                 .userPw(hash)
                 .userNm(join.getUserNm())
                 .userNickNm(join.getUserNickNm())
-                .cellPhone(join.getCellphone())
+                .cellPhone(join.getCellPhone())
                 .gender(join.getGender()) //기본
                 .role(UserRole.USER) //기본
                 .birth(join.getBirth())

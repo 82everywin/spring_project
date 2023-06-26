@@ -44,7 +44,7 @@ public class UserEditValidator implements Validator, CellPhoneValidator {
         String nowPw = userJoin.getNowPw();
         String updatePw = userJoin.getUserPw();
         String updatePwCk = userJoin.getUserPwCk();
-        String phone = userJoin.getCellphone();
+        String phone = userJoin.getCellPhone();
 
         if (nickNm == null || nickNm.isBlank()) {
            nickNm = user.getUserNickNm();
