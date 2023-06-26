@@ -85,6 +85,7 @@ public class StudyController {
         return "redirect:/study/view/" + studyForm.getStudyNo();
     }
 
+
     /**
      * 스터디 신청 내역 조회
      * - 본인이 작성한 내역은 보이나 다른 회원이나 비회원인 경우는 승인 여부 검증

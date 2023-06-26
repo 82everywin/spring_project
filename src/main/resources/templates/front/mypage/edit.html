@@ -5,7 +5,7 @@
 
 <div class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
 <section layout:fragment="content">
-    <form method="post" th:action="@{/user/mypage/edit}" th:object="${userJoin}" autocomplete="off">
+    <form method="post" th:object="${userInfo}" autocomplete="off">
         <div>
             <h1>내 정보 관리</h1>
         </div>
@@ -13,7 +13,7 @@
             <dl>
                 <dt>사용자 이름</dt>
                 <dd>
-                    <p th:field="*{userNm}" th:text="${userNm}"></p>
+                    <p th:text="*{userNm}"></p>
                 </dd>
             </dl>
         </div>
@@ -24,7 +24,7 @@
             <dl>
                 <dt>아이디 ( 이메일 )</dt>
                 <dd>
-                    <p th:field="*{userEmail}" th:text="${userEmail}"></p>
+                    <p th:field="*{userEmail}" th:text="*{userEmail}"></p>
                 </dd>
             </dl>
         </div>
@@ -55,7 +55,7 @@
             <dl>
                 <dt>비밀번호 변경</dt>
                 <dd>
-                    <input type="text" name="userPw" th:field="*{userPw}" placeholder="8~16자, 알파벳, 숫자, 특수문자를 1개 이상 포함해주세요.">
+                    <input type="password" name="userPw" th:field="*{userPw}" placeholder="8~16자, 알파벳, 숫자, 특수문자를 1개 이상 포함해주세요.">
                 </dd>
             </dl>
 
@@ -74,8 +74,8 @@
             <dl>
                 <dt>핸드폰 번호 변경</dt>
                 <dd>
-                    <input type="text" name="cellphone" th:field="*{cellphone}" placeholder=" ' - ' 를 제외하고 입력해주세요.">
-                    <div class="error" th:each="err : ${#fields.errors('cellphone')}" th:text="${err}"></div>
+                    <input type="text" name="cellphone" th:field="*{cellPhone}" placeholder=" ' - ' 를 제외하고 입력해주세요.">
+                    <div class="error" th:each="err : ${#fields.errors('cellPhone')}" th:text="${err}"></div>
                 </dd>
             </dl>
         </div>
