@@ -49,7 +49,7 @@ public class BoardComment extends BaseEntity {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="idBoardData")
     @ToString.Exclude
-    private BoardData boardData; // 원 게시글
+    private Post post; // 원 게시글
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="userNo")

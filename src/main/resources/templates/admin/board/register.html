@@ -2,16 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/layouts/main}">
-<section layout:fragment="content">
+<section layout:fragment="content" class="layout_width">
     <nav th:replace="~{admin/board/_submenu::menus}"></nav>
 
-    <form class="form" method="post" th:action="@{/admin/board/save}" autocomplete="off">
+    <form name="frmSave" class="form_style1" method="post" th:action="@{/admin/board/save}" autocomplete="off">
         <th:block th:replace="~{admin/board/_form::form}"></th:block>
         <div class="btn">
         <button type="submit" class="submit_btn">등록하기</button>
-        <button type="button" class="submit_btn">
-            <a th:href="@{admin/board}">취소하기</a>
-        </button>
         </div>
     </form>
 </section>

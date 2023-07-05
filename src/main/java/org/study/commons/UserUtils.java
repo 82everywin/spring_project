@@ -32,7 +32,7 @@ public class UserUtils {
     public boolean isAdmin() {
         User user = getEntity();
 
-        if (user != null && user.getRole() == UserRole.ADMIN.ADMIN) {
+        if (user != null && user.getRole() == UserRole.ADMIN) {
             return true;
         }
 

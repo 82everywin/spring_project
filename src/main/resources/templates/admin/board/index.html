@@ -4,52 +4,65 @@
       layout:decorate="~{admin/layouts/main}">
 <section layout:fragment="content">
     <nav th:replace="~{admin/board/_submenu::menus}"></nav>
-    <form method="post" th:action="@{/admin/board}">
-        <!-- 게시판 목록 S -->
-        <div role="region" aria-label="data table" tabindex="0" class="primary">
-            <div class="middle-title">게시판 목록</div>
-            <table id="list">
-                <thead>
-                <tr>
-                    <th class="checkbox">
-                        <input type="checkbox">
-                    </th>
-                    <th>게시판ID</th>
-                    <th>게시판명</th>
-                    <th>처리일시</th>
-                    <th>처리자</th>
-                    <th>사용여부</th>
-                    <th>비고</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="config : ${configs}" th:object="${config}">
-                    <td>
-                        <input type="checkbox" name="bId" th:value="*{bId}">
-                    </td>
-                    <td><a th:href="@{/admin/board/update/{id}(id=*{bId})}" th:text="*{bId}"></a></td>
-                    <td th:text="*{boardNm}"></td>
-                    <td th:text="${createdAt}"></td>
-                    <!--베이스엔티티에 있는 생성일시를 넣으려면 어떻게 해야하는지?-->
-                    <td></td>
-                    <td th:text="*{Use}"></td>
-                    <td>
-                        <button class="btn1">
-                            <a th:href="@{/admin/board/update/{id}(id=*{bId})}">설정 수정</a>
-                        </button>
-                        <button class="btn1">
-                            <a href="#">미리보기</a> <!-- 사용자 페이지 해당 카테고리로 이동 -->
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <h1 class="headline">게시판 검색</h1>
+    <form class="search_form" method="get" name="frmSearch" th:action="@{/admin/board}" autocomplete="off" th:object="${boardSearch}">
+            <dl>
+                <dt>검색어</dt>
+                <dd>
+                    <div class="input_grp">
+                        <select name="sopt" th:field="*{sopt}">
+                            <option value="all">통합검색</option>
+                            <option value="bId">게시판 ID</option>
+                            <option value="bName">게시판명</option>
+                        </select>
+                        <input type="text" name="skey" th:field="*{skey}" placeholder="검색어 입력...">
+                    </div>
+                </dd>
+            </dl>
+        <div>
+            <button class="search_btn" type="submit">조회하기</button>
         </div>
-        <!-- div 태그 안에 table을 넣어놔서 삭제, 수정하기 버튼은 따로 css 주세요! (대윤) -->
-        <div class="btn">
-            <button class="btn1" type="button">삭제하기</button>
+    </form>
+
+    <h1 class="headline">게시판 목록</h1>
+    <form method="post" name="frmList" th:action="@{/admin/board}" autocomplete="off" target="ifrmProcess">
+        <input type="hidden" name="_method" value="patch"> <!-- 수정할 때는 method=patch -->
+        <table class="table-rows">
+            <thead>
+            <tr>
+                <th width="40">
+                    <input type="checkbox" class="checkall" id="checkall" data-target-name="bId">
+                    <label for="checkall"></label>
+                    <!--bId를 선택하면 전부 체크-->
+                </th>
+                <th width="150">게시판 ID</th>
+                <th width="300">게시판명</th>
+                <th width="150">사용여부</th>
+                <th width="600"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item, status : ${items}" th:object="${item}">
+                <td align="center">
+                    <input type="checkbox" name="bId" th:value="*{bId}" th:id="${'bId_' + status.index}">
+                    <label th:for="${'bId_' + status.index}"></label>
+                </td>
+                <td align="center" th:text="*{bId}"></td>
+                <td align="center" th:text="*{boardNm}"></td>
+                <td align="center" th:text="*{Use}"></td>
+                <td>
+                    <a th:href="@{/admin/board/{bId}/update(bId=*{bId})}" class="btn1">설정 수정</a>
+                    <a th:href="@{/board/list/{bId}(bId=*{bId})}" class="btn1">미리보기</a>
+                    <a th:href="@{/board/write/{bId}(bId=*{bId})}" class="btn1">글쓰기</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="table-action">
+            <button class="btn2" type="button" onclick="return confirm('정말 삭제하시겠습니까?');">
+                <a th:href="@{/admin/board/delete/{bId}(bId=*{bId})}">삭제하기</a>
+            </button>
         </div>
-        <!-- 게시판 목록 E -->
     </form>
 </section>
 </html>

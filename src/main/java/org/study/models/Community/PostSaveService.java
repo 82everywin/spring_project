@@ -1,60 +1,58 @@
 package org.study.models.Community;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Errors;
 import org.study.commons.UserUtils;
-import org.study.controllers.user.Community.PostConfig;
-import org.study.entities.board.BoardData;
-import org.study.repositories.UserRepository;
-import org.study.repositories.board.BoardDataRepository;
+import org.study.commons.validators.PostNotFoundException;
+import org.study.controllers.community.PostForm;
+import org.study.entities.board.Board;
+import org.study.entities.board.Post;
+import org.study.models.board.BoardConfigInfoService;
+import org.study.repositories.board.PostRepository;
 
 @Service
 public class PostSaveService {
     @Autowired
-    private BoardDataRepository dataRepository;
+    private BoardConfigInfoService configInfoService;
     @Autowired
-    private PostSaveValidator postSaveValidator;
+    private HttpServletRequest request;
     @Autowired
-    private UserUtils userUtils;
+    private UserUtils userUtil;
     @Autowired
-    private UserRepository userRepository;
+    private PostRepository repository;
 
-    /**
-     * 컨트롤러 Bean Validation 대응
-     * @param postConfig
-     */
-    public void postConfig(PostConfig postConfig) {
-        postConfig(postConfig, null);
-    }
+    public void save(PostForm postForm) {
+        Long id = postForm.getId();
+        Board board = configInfoService.get(postForm.getBId(), id == null ? "write":"update");
 
-    public void postConfig(PostConfig postConfig, Errors errors) {
-        /** 로그인 하지 않은 경우 작성 불가 처리 */
-        if (!userUtils.isLogin() || errors != null && errors.hasErrors()) {
-            return;
-        }
-        postSaveValidator.check(postConfig, errors);
-
-        /**
-         * 엔티티가 이미 등록된 gid라면 기본 엔티티를 가져오고 ( 수정 )
-         * 없다면 새로운 엔티티로 변환 PostConfig.if(postConfig)
-         */
-
-        BoardData boardData = null;
-        Long gid = postConfig.getGid();
-        String mode = postConfig.getMode();
-        if (mode != null && mode.equals("update") && dataRepository.exists(gid)) {
-            boardData = dataRepository.findById(gid).orElseGet(() -> postConfig.of(postConfig));
-        } else {
-            boardData.setUser(userUtils.getEntity());
-            boardData = PostConfig.of(postConfig);
-//            boardData = new BoardData();
-//            boardData.setGid(postConfig.getGid());
-//            boardData.setSubject(postConfig.getSubject());
-//            boardData.setContent(postConfig.getContent());
-        }
-
-        // 엔티티 저장 또는 수정 처리
-        dataRepository.saveAndFlush(boardData);
+        Post post = null;
+        if (id == null) { // 게시글 추가
+            String ip = request.getRemoteAddr();
+            String ua = request.getHeader("User-Agent"); // 모바일인지 PC인지 ( 현재 사용하는 브라우저 정보 )
+            post = Post.builder()
+                    .gid(postForm.getGid())
+                    .board(board)
+                    .category(postForm.getCategory())
+                    .poster(postForm.getPoster())
+                    .subject(postForm.getSubject())
+                    .content(postForm.getContent())
+                    .ip(ip)
+                    .ua(ua)
+                    .build();
+            if (userUtil.isLogin()) { // 로그인 시 - 회원 데이터
+                post.setUser(userUtil.getEntity());
+            } else {
+                // 게시글 작성 금지
+            }
+        } else { // 게시글 수정
+            post = repository.findById(postForm.getId()).orElseThrow(PostNotFoundException::new);
+            post.setPoster(postForm.getPoster());
+            post.setSubject(postForm.getSubject());
+            post.setContent(postForm.getContent());
+            post.setCategory(postForm.getCategory());
+            }
+        post = repository.saveAndFlush(post);
+        post.setId(post.getId());
     }
 }

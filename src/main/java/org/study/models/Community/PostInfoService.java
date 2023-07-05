@@ -2,31 +2,34 @@ package org.study.models.Community;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.study.commons.UserUtils;
 import org.study.commons.validators.PostNotFoundException;
-import org.study.controllers.user.Community.PostConfig;
-import org.study.entities.board.BoardData;
-import org.study.repositories.board.BoardDataRepository;
+import org.study.entities.board.Post;
+import org.study.models.board.BoardConfigInfoService;
+import org.study.repositories.board.PostRepository;
 
 @Service
 public class PostInfoService {
     @Autowired
-    private BoardDataRepository boardDataRepository;
+    private PostRepository postRepository;
+    @Autowired
+    private BoardConfigInfoService configInfoService;
+    @Autowired
+    private UserUtils userUtils;
 
-    public PostConfig get(Long gid) {
-        if (gid == null) {
+    public Post get(Long id) {
+        return get(id, "view");
+    }
+    public Post get(Long id, String location) {
+        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+
+        // 게시판 설정 조회 + 접근 권한체크
+        configInfoService.get(post.getBoard().getBId(), location);
+
+        // 게시글 삭제 여부 체크(소프트 삭제)
+        if (!userUtils.isAdmin() && post.getDeletedAt() != null) { // 삭제된 게시글
             throw new PostNotFoundException();
         }
-
-        BoardData boardData = boardDataRepository.findById(gid).orElseThrow(PostNotFoundException::new);
-
-        PostConfig postConfig = PostConfig.builder()
-                .id(boardData.getId())
-                .gid(boardData.getGid())
-                .category(boardData.getCategory())
-                .subject(boardData.getSubject())
-                .content(boardData.getContent())
-                .build();
-
-        return postConfig;
+        return post;
     }
 }

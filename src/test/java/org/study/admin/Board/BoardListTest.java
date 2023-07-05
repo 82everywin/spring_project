@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.study.commons.constants.board.AfterWriteTarget;
 import org.study.commons.constants.board.SkinType;
 import org.study.commons.constants.board.ViewType;
-import org.study.controllers.admin.board.BoardConfig;
-import org.study.models.board.BoardSaveService;
-import org.study.models.board.BoardInfoService;
-import org.study.models.board.BoardListService;
+import org.study.controllers.admin.board.BoardForm;
+import org.study.models.board.BoardConfigSaveService;
+import org.study.models.board.BoardConfigInfoService;
+import org.study.models.board.BoardConfigListService;
 import org.study.repositories.board.BoardRepository;
 
 import java.util.List;
@@ -25,21 +25,21 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(locations="classpath:application-test.properties")
 public class BoardListTest {
 
-    private BoardConfig boardConfig;
+    private BoardForm boardForm;
     @Autowired
     private BoardRepository repository;
     @Autowired
-    private BoardSaveService service;
+    private BoardConfigSaveService service;
     @Autowired
-    private BoardInfoService infoService;
+    private BoardConfigInfoService infoService;
     @Autowired
-    private BoardListService listService;
+    private BoardConfigListService listService;
 
     private int boardCnt = 30;
     @BeforeEach
     void insert() {
         for (int i=0; i<boardCnt; i++) {
-            BoardConfig boardConfig = BoardConfig.builder()
+            BoardForm boardForm = BoardForm.builder()
                     .bId("게시판아이디" + i)
                     .boardNm("게시판명" + i)
                     .isUse(true)
@@ -53,7 +53,7 @@ public class BoardListTest {
                     .skin(SkinType.DEFAULT.toString())
                     .isReview(true)
                     .build();
-            service.save(boardConfig);
+            service.save(boardForm);
         }
     }
     /**
@@ -77,14 +77,14 @@ public class BoardListTest {
     @Test
     @DisplayName("최종목적 - 전체 게시판 리스트를 조회 성공")
     void gets() {
-        List<BoardConfig> lists = listService.gets();
+        List<BoardForm> lists = listService.gets();
         System.out.println(lists);
     }
 
     @Test
     @DisplayName("전체 데이터 조회 - 조회된 데이터가 boardCnt와 갯수가 일치하면 성공")
     void getAllTest() {
-        List<BoardConfig> lists = listService.gets();
+        List<BoardForm> lists = listService.gets();
         System.out.println(lists);
 
         assertEquals(boardCnt, lists.size());

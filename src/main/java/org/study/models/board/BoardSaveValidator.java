@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import org.study.commons.validators.BadRequestException;
 import org.study.commons.validators.RequiredCheckValidator;
 import org.study.commons.validators.ServiceValidator;
-import org.study.controllers.admin.board.BoardConfig;
+import org.study.controllers.admin.board.BoardForm;
 import org.study.repositories.board.BoardRepository;
 
 /**
@@ -14,15 +14,15 @@ import org.study.repositories.board.BoardRepository;
  *
  */
 @Component
-public class BoardSaveValidator implements ServiceValidator<BoardConfig>, RequiredCheckValidator {
+public class BoardSaveValidator implements ServiceValidator<BoardForm>, RequiredCheckValidator {
 
     @Autowired
     private BoardRepository repository;
 
     @Override
-    public void check(BoardConfig boardConfig) {
+    public void check(BoardForm boardForm) {
         /** BoardConfig가 null 값일 경우 예외 발생 */
-        nullCheck(boardConfig, new BadRequestException("잘못된 접근입니다."));
+        nullCheck(boardForm, new BadRequestException("잘못된 접근입니다."));
 
 //        /** 필수 항목 체크 */
 //        requiredCheck(boardConfig.getBId(),new BadRequestException("게시판 아이디를 입력하세요."));
@@ -31,7 +31,7 @@ public class BoardSaveValidator implements ServiceValidator<BoardConfig>, Requir
     }
 
     @Override
-    public void check(BoardConfig boardConfig, Errors errors) {
+    public void check(BoardForm boardForm, Errors errors) {
         /** bId 중복 여부 체크 */
 //        if (repository.exists(boardConfig.getBId())) {
 //            // 이미 등록된 게시판 아이디인 경우
@@ -44,7 +44,7 @@ public class BoardSaveValidator implements ServiceValidator<BoardConfig>, Requir
         }
 
         /** rowsPerPage : 최소 10부터 되는지 체크 */
-        if (boardConfig.getRowsPerPage() < 10L) {
+        if (boardForm.getRowsPerPage() < 10L) {
             errors.rejectValue("rowsPerPage", "minimum.value.rowsPerPage");
         }
     }

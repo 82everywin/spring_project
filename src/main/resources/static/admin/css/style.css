@@ -107,6 +107,8 @@ textarea {
     line-height: 45px;
 }
 
+.submit_btn > a {color: #fff;}
+
 
 /** 관리자 헤더 영역  S */
 header{
@@ -170,7 +172,7 @@ main nav.sub_menus{
     margin-bottom: 20px;
 }
 /** 관리자 메인 영역  > side 부분 E */
-
+ left
 /** 관리자 테이블 공통 부분 S */
 .table-rows { padding: 0; border-spacing: 0; width: 100%; }
 .table-rows th { padding: 10px; border-bottom: 1px solid #d5d5d5; border-top: 1px solid #d5d5d5; background: #f8f8f8; }
@@ -188,8 +190,18 @@ main nav.sub_menus{
 /** 검색 양식 */
 .search_form dl { display: table; width: 100%; border-bottom: 1px solid #d5d5d5; }
 .search_form dl:first-of-type { border-top: 1px solid #d5d5d5; }
+.headline { border-bottom: 2px solid #222; margin-bottom: 5px; }
 .search_form dl dt { display: table-cell; width: 120px; padding: 10px; background: #f8f8f8; }
 .search_form dl dd { display: table-cell; padding: 10px; }
 .search_btn { margin: 10px auto 30px; display: block; min-width: 150px; padding: 10px; background: #212121; color: #fff; border: 0; font-size: 15px; border-radius: 3px; cursor: pointer; }
 
+/** 양식 스타일 */
+.form_style1 dl { align-items: stretch; border-bottom: 1px solid #d5d5d5; display: flex; width: 100%; margin: 0; align-items: center;  }
+.form_style1 dl > dt { background: #f8f8f8; padding: 10px; width: 130px; }
+.form_style1 dl > dd { padding: 10px; width: calc(100% - 130px); margin: 0; }
 
+.layout_width { max-width: 1140px; min-width: 1000px; margin: 0 auto; }
+
+/** 메인 공통 S */
+main.layout_width { padding-top:20px; max-width: 1140px; min-width: 1000px; margin: 0 auto; }
+/** 메인 공통 E */

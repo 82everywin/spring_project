@@ -1,18 +1,21 @@
 package org.study.controllers.admin.community;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.study.commons.Pagination;
-import org.study.controllers.user.Community.PostConfig;
-import org.study.entities.board.BoardData;
+import org.study.controllers.admin.board.BoardSearch;
+import org.study.entities.board.Board;
+import org.study.entities.board.Post;
 import org.study.models.Community.PostListService;
-import org.study.repositories.board.BoardDataRepository;
+import org.study.models.board.BoardConfigInfoService;
+import org.study.repositories.board.PostRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,28 +26,39 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/community")
+@RequiredArgsConstructor
 public class CommunityController {
 
-    @Autowired
-    private PostListService listService;
-    @Autowired
-    private BoardDataRepository boardDataRepository;
-    @Autowired
-    private HttpServletRequest request;
+    private final BoardConfigInfoService infoService;
+    private final PostListService listService;
+    private final HttpServletRequest request;
+    private final BoardConfigInfoService configInfoService;
+    private Board board; // 게시판 설정
+
 
     /**
-     * 커뮤니티 게시글 목록
+     * 관리자 커뮤니티 게시글 목록
      *
      * @return
      */
     @GetMapping
-    public String lists(Model model, CommunitySearch communitySearch) {
-        String url = request.getContextPath() + "/admin/community";
-        Page<BoardData> data = listService.gets(communitySearch);
-        Pagination<BoardData> pagination = new Pagination<>(data, url);
-        model.addAttribute("datas", data.getContent());
+    public String list(String bId, @RequestParam(value = "category", required = false) String categoryName,
+                       Model model, @ModelAttribute BoardSearch boardSearch) {
+        commonProcess(bId, "list", model);
 
-        return "admin/community/lists";
+        Board board = infoService.get(bId, "list");
+        model.addAttribute("board", board);
+        model.addAttribute("category", categoryName);
+
+        // 카테고리별 조회하기
+        Page<Post> items = listService.gets(boardSearch, bId, categoryName);
+        model.addAttribute("postList", items.getContent());
+
+        String url = request.getRequestURI();
+        Pagination pagination = new Pagination(items, url);
+        model.addAttribute("pagination", pagination);
+
+        return "board/list";
     }
 
 
@@ -56,6 +70,39 @@ public class CommunityController {
      *  게시글 수정
      */
 
+    private void commonProcess(String bId, String action, Model model) {
+        /**
+         * 1. bId 게시판 설정 조회
+         * 2. action - write, update - 공통 스크립트, 공통 CSS
+         *           - 에디터 사용 -> 에디터 스크립트 추가
+         *           - 에디터 미사용 -> 에디터 스크립트 미추가
+         *           - write, list, view -> 권한 체크
+         *           - update - 본인이 게시글만 수정 가능
+         *                    - 회원 - 회원번호
+         *                    - 관리자는 다 가능
+         */
 
+        board = configInfoService.get(bId, action);
+        List<String> addCss = new ArrayList<>();
+        List<String> addScript = new ArrayList<>();
+
+        // 공통 스타일 CSS
+        addCss.add("board/style");
+        addCss.add(String.format("board/%s_style", board.getSkin()));
+
+        // 글 작성, 수정시 필요한 자바스크립트
+        if (action.equals("write") || action.equals("update")) {
+            if (board.isUseEditor()) { // 에디터 사용 경우
+                addScript.add("ckeditor/ckeditor");
+            }
+            addScript.add("fileManager");
+            addScript.add("board/form");
+        }
+
+        // 공통 필요 속성 추가
+        model.addAttribute("board", board); // 게시판 설정
+        model.addAttribute("addCss", addCss); // CSS 설정
+        model.addAttribute("addScript", addScript); // JS 설정
+    }
 
 }

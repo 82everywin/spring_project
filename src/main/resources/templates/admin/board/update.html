@@ -5,7 +5,7 @@
 <section layout:fragment="content">
     <nav th:replace="~{admin/board/_submenu::menus}"></nav>
 
-    <form method="post" th:action="@{/admin/board/save}" autocomplete="off">
+    <form name="frmSave" class="form_style1" method="post" th:action="@{/admin/board/save}" autocomplete="off">
         <input type="hidden" name="mode" value="update">
         <!-- update가 있으면 수정, 없으면 추가 -->
         <th:block th:replace="~{admin/board/_form::form}"></th:block>

@@ -2,13 +2,14 @@ package org.study.entities.board;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.*;
+import org.study.commons.constants.UserRole;
 import org.study.commons.constants.board.AfterWriteTarget;
 import org.study.commons.constants.board.SkinType;
-import org.study.commons.constants.board.ViewType;
 import org.study.entities.BaseEntity;
-import org.study.entities.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 게시판 설정
@@ -19,7 +20,6 @@ import org.study.entities.User;
 @AllArgsConstructor
 @Entity
 public class Board extends BaseEntity {
-
     @Id
     @Column(length=20, nullable = false)
     private String bId; // 게시판 아이디
@@ -30,16 +30,37 @@ public class Board extends BaseEntity {
     private boolean isUse; // 사용 여부
 
     @Column(length = 100, nullable = false)
-    private Long rowsPerPage; // 1페이지 게시글 수
+    private int rowsPerPage = 20; // 1페이지 게시글 수
 
     private boolean useViewList; // 게시글 하단에 목록 노출
 
     @Lob
     private String category; // 분류
 
+    // 목록 접근 권한
     @Enumerated(EnumType.STRING)
-    @Column(length=20, nullable = false)
-    private ViewType viewType = ViewType.USER;  // 출력 구분
+    @Column(length=10, nullable=false)
+    private UserRole listAccessRole = UserRole.ALL;
+
+    // 글보기 접근 권한
+    @Enumerated(EnumType.STRING)
+    @Column(length=10, nullable=false)
+    private UserRole viewAccessRole = UserRole.ALL;
+
+    // 글쓰기 접근 권한
+    @Enumerated(EnumType.STRING)
+    @Column(length=10, nullable=false)
+    private UserRole writeAccessRole = UserRole.ALL;
+
+    // 답글 접근 권한
+    @Enumerated(EnumType.STRING)
+    @Column(length=10, nullable=false)
+    private UserRole replyAccessRole = UserRole.ALL;
+
+    // 댓글 접근 권한
+    @Enumerated(EnumType.STRING)
+    @Column(length=10, nullable=false)
+    private UserRole commentAccessRole = UserRole.ALL;
 
     private boolean useEditor; // 에디터 사용여부
     private boolean useFileAttach; // 파일 첨부 사용여부
@@ -55,9 +76,9 @@ public class Board extends BaseEntity {
     private SkinType skin = SkinType.DEFAULT; // 스킨명
     private boolean isReview; // 후기 게시판 여부
 
-    @ManyToOne
-    @JoinColumn(name="userNo")
-    private User user;
+    @OneToMany(mappedBy = "board")
+    @ToString.Exclude
+    private List<Post> postList = new ArrayList<>();
 
     /**
      * 게시판 분류 목록 ( category )
@@ -68,8 +89,8 @@ public class Board extends BaseEntity {
         if (category == null) {
             return null;
         }
-
-        String[] categories = category.replaceAll("\\r","").trim().split("\\n"); // 리눅스 사용 시 \\r로 제거 후 \\n기준으로 나눔
+        // 리눅스 사용 시 \\r로 제거 후 \\n기준으로 나눔
+        String[] categories = category.replaceAll("\\r","").trim().split("\\n");
         return categories;
     }
 }

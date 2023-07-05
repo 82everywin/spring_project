@@ -1,144 +1,213 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="form" th:object="${boardConfig}">
+<th:block th:fragment="form" th:object="${boardForm}">
+    <h1>게시판 등록 / 수정</h1>
     <div class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
-    <div class="small-title">일반 설정</div>
-    <table class="table">
-        <tr>
-            <th>게시판ID</th>
-            <td>
-                <th:block th:if="${mode != null && mode == 'update'}">
-                    <!-- 모드가 수정일 때는 수정이 보이고 -->
-                    <!-- 수정이면 게시판 아이디 보여주기 -->
-                    [[*{bId}]]
-                    <input type="hidden" name="bId" th:field="*{bId}">
-                </th:block>
-                <input th:unless="${mode != null && mode == 'update'}" type="text" name="bId" th:field="*{bId}">
-                <!-- 반대의 경우는 (등록일 때는) 보이지 않음 -->
-                <div class="error" th:each="err : ${#fields.errors('bId')}" th:text="${err}"></div>
-            </td>
-        </tr>
-        <tr>
-            <th>게시판 이름</th>
-            <td>
-                <input type="text" name="boardNm" th:field="*{boardNm}">
-                <div class="error" th:each="err : ${#fields.errors('boardNm')}" th:text="${err}"></div>
-            </td>
-        </tr>
-        <tr>
-            <th>사용여부</th>
-            <td>
-                <input type="radio" name="isUse" value="1" id="isUse_1" th:field="*{Use}" checked>
-                <label for="isUse_1">사용</label>
-                <input type="radio" name="isUse" value="0" id="isUse_0" th:field="*{Use}">
-                <label for="isUse_0">미사용</label>
-            </td>
-        </tr>
-        <tr>
-            <th>페이지 당 게시글 수</th>
-            <td>
-                <input type="number" name="rowsPerPage" th:field="*{rowsPerPage}">
-                <div class="error" th:each="err : ${#fields.errors('rowsPerPage')}" th:text="${err}"></div>
-            </td>
-        </tr>
-        <tr>
-            <th>게시글 하단에 목록노출</th>
-            <td>
-                <input type="radio" name="useViewList" value="1" id="useViewList_1" th:field="*{useViewList}" checked>
-                <label for="useViewList_1">사용</label>
-                <input type="radio" name="useViewList" value="0" id="useViewList_0" th:field="*{useViewList}">
-                <label for="useViewList_1">미사용</label>
-            </td>
-        </tr>
-    </table>
-    <div class="small-title">분류설정</div>
-    <table class="table">
-        <tr>
-            <th>분류</th>
-            <td>
-                <textarea name="category" th:field="*{category}" rows="10" placeholder="분류 여러개인경우 엔터키를 눌러서 입력하세요."></textarea>
-            </td>
-        </tr>
-    </table>
+    <h2 class="headline">일반 설정</h2>
+    <dl>
+        <dt>게시판ID</dt>
+        <dd>
+            <th:block th:if="${mode != null && mode == 'update'}">
+                <!-- 모드가 수정일 때는 수정이 보이고 -->
+                <!-- 수정이면 게시판 아이디 보여주기 -->
+                [[*{bId}]]
+                <input type="hidden" name="bId" th:field="*{bId}">
+            </th:block>
+            <input th:unless="${mode != null && mode == 'update'}" type="text" name="bId" th:field="*{bId}">
+            <!-- 반대의 경우는 (등록일 때는) 보이지 않음 -->
+            <div class="error" th:each="err : ${#fields.errors('bId')}" th:text="${err}"></div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>게시판 이름</dt>
+        <dd>
+            <input type="text" name="boardNm" th:field="*{boardNm}">
+            <div class="error" th:each="err : ${#fields.errors('boardNm')}" th:text="${err}"></div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>사용여부</dt>
+        <dd>
+            <input type="radio" name="isUse" value="1" id="isUse_1" th:field="*{Use}">
+            <label for="isUse_1">사용</label>
+            <input type="radio" name="isUse" value="0" id="isUse_0" th:field="*{Use}">
+            <label for="isUse_0">미사용</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>페이지 당 게시글 수</dt>
+        <dd>
+            <input type="number" name="rowsPerPage" th:field="*{rowsPerPage}">
+        </dd>
+    </dl>
+    <dl>
+        <dt>게시글하단 목록노출</dt>
+        <dd>
+            <input type="radio" name="useViewList" value="1" id="useViewList_1" th:field="*{useViewList}">
+            <label for="useViewList_1">사용</label>
+            <input type="radio" name="useViewList" value="0" id="useViewList_0" th:field="*{useViewList}">
+            <label for="useViewList_1">미사용</label>
+        </dd>
+    </dl>
 
-    <div class="small-title">기능설정</div>
-    <table class="table">
-        <tr>
-            <th>출력구분</th>
-            <td>
-                <input type="radio" name="viewType" value="ADMIN" id="viewType_ADMIN" th:field="*{viewType}" checked>
-                <label for="viewType_ADMIN">관리자페이지</label>
-                <input type="radio" name="viewType" value="USER" id="viewType_USER" th:field="*{viewType}">
-                <label for="viewType_USER">회원페이지</label>
-            </td>
-        </tr>
-        <tr>
-            <th>에디터</th>
-            <td>
-                <input type="radio" name="useEditor" value="1" id="useEditor_1" th:field="*{useEditor}" checked>
-                <label for="useEditor_1">사용</label>
-                <input type="radio" name="useEditor" value="0" id="useEditor_0" th:field="*{useEditor}">
-                <label for="useEditor_0">미사용</label>
-            </td>
-        </tr>
-        <tr>
-            <th>파일첨부사용</th>
-            <td>
-                <input type="radio" name="useFileAttach" value="1" id="useFileAttach_1" checked>
-                <label for="useFileAttach_1">사용</label>
-                <input type="radio" name="useFileAttach" value="0" id="useFileAttach_0">
-                <label for="useFileAttach_0">미사용</label>
-            </td>
-        </tr>
-        <tr>
-            <th>이미지첨부</th>
-            <td>
-                <input type="radio" name="useImageAttach" value="1" id="useImageAttach_1" checked>
-                <label for="useImageAttach_1">사용</label>
-                <input type="radio" name="useImageAttach" value="0" id="useImageAttach_0">
-                <label for="useImageAttach_0">미사용</label>
-            </td>
-        </tr>
-        <tr>
-            <th>댓글 사용</th>
-            <td>
-                <input type="radio" name="useComment" value="1" id="useComment_1" th:field="*{useComment}" checked>
-                <label for="useComment_1">사용</label>
-                <input type="radio" name="useComment" value="0" id="useComment_0" th:field="*{useComment}">
-                <label for="useComment_0">미사용</label>
-            </td>
-        </tr>
-        <tr>
-            <th>글 작성 후 이동</th>
-            <td>
-                <input type="radio" name="afterWriteTarget" value="VIEW" id="afterWriteTarget_VIEW" th:field="*{afterWriteTarget}" checked>
-                <label for="afterWriteTarget_VIEW">게시글</label>
-                <input type="radio" name="afterWriteTarget" value="LIST" id="afterWriteTarget_LIST" th:field="*{afterWriteTarget}">
-                <label for="afterWriteTarget_LIST">목록</label>
-            </td>
-        </tr>
-        <tr>
-            <th>게시판 스킨</th>
-            <td>
-            <select name="skin" th:field="*{skin}">
+    <h2 class="headline">분류설정</h2>
+    <dl>
+        <dt>분류</dt>
+        <dd>
+            <textarea name="category" th:field="*{category}" placeholder="분류 여러개인경우 엔터키를 눌러서 입력하세요."></textarea>
+        </dd>
+    </dl>
+
+    <h2 class="headline">권한설정</h2>
+    <dl>
+        <dt>목록</dt>
+        <dd>
+            <input type="radio" name="listAccessRole" value="ALL" id="listAccessRole_ALL" th:field="*{listAccessRole}">
+            <label for="listAccessRole_ALL">전체(회원+관리자)</label>
+
+            <input type="radio" name="listAccessRole" value="USER" id="listAccessRole_USER"
+                   th:field="*{listAccessRole}">
+            <label for="listAccessRole_USER">회원</label>
+
+            <input type="radio" name="listAccessRole" value="ADMIN" id="listAccessRole_ADMIN"
+                   th:field="*{listAccessRole}">
+            <label for="listAccessRole_ADMIN">관리자</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>글보기</dt>
+        <dd>
+            <input type="radio" name="viewAccessRole" value="ALL" id="viewAccessRole_ALL"
+                   th:field="*{viewAccessRole}">
+            <label for="viewAccessRole_ALL">전체(회원+관리자)</label>
+
+            <input type="radio" name="viewAccessRole" value="USER" id="viewAccessRole_USER"
+                   th:field="*{viewAccessRole}">
+            <label for="viewAccessRole_USER">회원</label>
+
+            <input type="radio" name="viewAccessRole" value="ADMIN" id="viewAccessRole_ADMIN"
+                   th:field="*{viewAccessRole}">
+            <label for="viewAccessRole_ADMIN">관리자</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>글쓰기</dt>
+        <dd>
+            <input type="radio" name="writeAccessRole" value="ALL" id="writeAccessRole_ALL"
+                   th:field="*{writeAccessRole}">
+            <label for="writeAccessRole_ALL">전체(회원+관리자)</label>
+
+            <input type="radio" name="writeAccessRole" value="USER" id="writeAccessRole_USER"
+                   th:field="*{writeAccessRole}">
+            <label for="writeAccessRole_USER">회원</label>
+
+            <input type="radio" name="writeAccessRole" value="ADMIN" id="writeAccessRole_ADMIN"
+                   th:field="*{writeAccessRole}">
+            <label for="writeAccessRole_ADMIN">관리자</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>답글</dt>
+        <dd>
+            <input type="radio" name="replyAccessRole" value="ALL" id="replyAccessRole_ALL"
+                   th:field="*{replyAccessRole}">
+            <label for="replyAccessRole_ALL">전체(회원+관리자)</label>
+
+            <input type="radio" name="replyAccessRole" value="USER" id="replyAccessRole_USER"
+                   th:field="*{replyAccessRole}">
+            <label for="replyAccessRole_USER">회원</label>
+
+            <input type="radio" name="replyAccessRole" value="ADMIN" id="replyAccessRole_ADMIN"
+                   th:field="*{replyAccessRole}">
+            <label for="replyAccessRole_ADMIN">관리자</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>댓글</dt>
+        <dd>
+            <input type="radio" name="commentAccessRole" value="ALL" id="commentAccessRole_ALL"
+                   th:field="*{commentAccessRole}">
+            <label for="commentAccessRole_ALL">전체(회원+관리자)</label>
+
+            <input type="radio" name="commentAccessRole" value="USER" id="commentAccessRole_USER"
+                   th:field="*{commentAccessRole}">
+            <label for="commentAccessRole_USER">회원</label>
+
+            <input type="radio" name="commentAccessRole" value="ADMIN" id="commentAccessRole_ADMIN"
+                   th:field="*{commentAccessRole}">
+            <label for="commentAccessRole_ADMIN">관리자</label>
+        </dd>
+    </dl>
+
+    <h2 class="headline">기능설정</h2>
+    <dl>
+        <dt>에디터</dt>
+        <dd>
+            <input type="radio" name="useEditor" value="1" id="useEditor_1" th:field="*{useEditor}">
+            <label for="useEditor_1">사용</label>
+            <input type="radio" name="useEditor" value="0" id="useEditor_0" th:field="*{useEditor}">
+            <label for="useEditor_0">미사용</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>파일첨부사용</dt>
+        <dd>
+            <input type="radio" name="useFileAttach" value="1" id="useFileAttach_1">
+            <label for="useFileAttach_1">사용</label>
+            <input type="radio" name="useFileAttach" value="0" id="useFileAttach_0">
+            <label for="useFileAttach_0">미사용</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>이미지첨부</dt>
+        <dd>
+            <input type="radio" name="useImageAttach" value="1" id="useImageAttach_1">
+            <label for="useImageAttach_1">사용</label>
+            <input type="radio" name="useImageAttach" value="0" id="useImageAttach_0">
+            <label for="useImageAttach_0">미사용</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>댓글 사용</dt>
+        <dd>
+            <input type="radio" name="useComment" value="1" id="useComment_1" th:field="*{useComment}">
+            <label for="useComment_1">사용</label>
+            <input type="radio" name="useComment" value="0" id="useComment_0" th:field="*{useComment}">
+            <label for="useComment_0">미사용</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>글 작성 후 이동</dt>
+        <dd>
+            <input type="radio" name="afterWriteTarget" value="VIEW" id="afterWriteTarget_VIEW"
+                   th:field="*{afterWriteTarget}">
+            <label for="afterWriteTarget_VIEW">게시글</label>
+            <input type="radio" name="afterWriteTarget" value="LIST" id="afterWriteTarget_LIST"
+                   th:field="*{afterWriteTarget}">
+            <label for="afterWriteTarget_LIST">목록</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt>게시판 스킨</dt>
+        <dd>
+            <select name="skin" th:field="*{skin}" style="width: 10%;">
                 <option th:value="DEFAULT">기본 게시판</option>
                 <option th:value="GALLERY">갤러리 게시판</option>
                 <option th:value="QNA">질문과 답변</option>
                 <option th:value="REVIEW">후기 게시판</option>
             </select>
-                <button type="button" class="btn1"><i class="xi-cog"></i>스킨관리</button>
-                <div class="error" th:each="err : ${#fields.errors('skin')}" th:text="${err}"></div>
-            </td>
-        </tr>
-        <tr>
-            <th>후기게시판여부</th>
-            <td>
-                <input type="radio" name="isReview" value="1" id="isReview_1" th:field="*{Review}" checked>
-                <label for="isReview_1">사용</label>
-                <input type="radio" name="isReview" value="0" id="isReview_0" th:field="*{Review}">
-                <label for="isReview_0">미사용</label>
-            </td>
-        </tr>
-    </table>
+            <button type="button" class="btn1"><i class="xi-cog"></i>스킨관리</button>
+            <div class="error" th:each="err : ${#fields.errors('skin')}" th:text="${err}"></div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>후기게시판여부</dt>
+        <dd>
+            <input type="radio" name="isReview" value="1" id="isReview_1" th:field="*{Review}">
+            <label for="isReview_1">사용</label>
+            <input type="radio" name="isReview" value="0" id="isReview_0" th:field="*{Review}">
+            <label for="isReview_0">미사용</label>
+        </dd>
+    </dl>
 </th:block>
 </html>

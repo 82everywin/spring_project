@@ -15,9 +15,9 @@ import org.study.commons.constants.board.SkinType;
 import org.study.commons.constants.board.ViewType;
 import org.study.commons.messageBundle.MessageBundle;
 import org.study.commons.validators.BadRequestException;
-import org.study.controllers.admin.board.BoardConfig;
-import org.study.models.board.BoardSaveService;
-import org.study.models.board.DuplicateBIdException;
+import org.study.controllers.admin.board.BoardForm;
+import org.study.models.board.BoardConfigSaveService;
+import org.study.models.board.DuplicateBoardConfigException;
 import org.study.repositories.board.BoardRepository;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -34,27 +34,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:application-test.properties")
-public class BoardConfigTest {
+public class PostFormTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    private BoardConfig boardConfig;
+    private BoardForm boardForm;
 
     @Autowired
     private BoardRepository repository;
 
     @Autowired
-    private BoardSaveService service;
+    private BoardConfigSaveService service;
 
     @BeforeEach
     void config() {
         // 테스트 양식 데이터 추가
-        boardConfig = BoardConfig.builder()
+        boardForm = BoardForm.builder()
                 .bId("QnA")
                 .boardNm("게시판1")
                 .isUse(true)
-                .rowsPerPage(10L)
+                .rowsPerPage(20)
                 .useViewList(true)
                 .category("QnA Notice")
                 .viewType(ViewType.USER.toString())
@@ -70,9 +70,9 @@ public class BoardConfigTest {
     @DisplayName("예외 없이 게시판이 성공적으로 등록 (최종목적) ")
     void configSuccess(){
         assertDoesNotThrow(()->{
-            service.save(boardConfig);
+            service.save(boardForm);
         });
-        System.out.println(boardConfig);
+        System.out.println(boardForm);
     }
 
     @Test
@@ -99,24 +99,24 @@ public class BoardConfigTest {
 
         /** 빈값 체크 S */
         String[] fields = {"bId", "boardNm" /* "rowsPerPage" */};
-        String bId = boardConfig.getBId();
-        String boardNm = boardConfig.getBoardNm();
+        String bId = boardForm.getBId();
+        String boardNm = boardForm.getBoardNm();
 
         for (String field : fields) {
             String includedWord = null;
 
             if (field.equals("bId")) {
-                boardConfig.setBId("   ");
-                boardConfig.setBoardNm(boardNm);
+                boardForm.setBId("   ");
+                boardForm.setBoardNm(boardNm);
                 includedWord = "게시판 아이디";
 
             } else if (field.equals("boardNm")) {
-                boardConfig.setBId(bId);
-                boardConfig.setBoardNm("   ");
+                boardForm.setBId(bId);
+                boardForm.setBoardNm("   ");
                 includedWord = "게시판 이름";
             }
             BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
-                service.save(boardConfig);
+                service.save(boardForm);
             });
             System.out.println(field);
             System.out.println(thrown.getMessage());
@@ -132,31 +132,24 @@ public class BoardConfigTest {
 
         /** NULL 체크 S */
         String[] fields2 = {"bId", "boardNm", "rowsPerPage"};
-        Long rowsPerPage = boardConfig.getRowsPerPage();
+        int rowsPerPage = boardForm.getRowsPerPage();
 
         for (String field : fields2) {
             String includedWord = null;
             if (field.equals("bId")) {
-                boardConfig.setBId(null);
-                boardConfig.setBoardNm(boardNm);
-                boardConfig.setRowsPerPage(rowsPerPage);
+                boardForm.setBId(null);
+                boardForm.setBoardNm(boardNm);
+                boardForm.setRowsPerPage(rowsPerPage);
                 includedWord = "게시판 아이디";
 
             } else if (field.equals("boardNm")) {
-                boardConfig.setBId(bId);
-                boardConfig.setBoardNm(null);
-                boardConfig.setRowsPerPage(rowsPerPage);
+                boardForm.setBId(bId);
+                boardForm.setBoardNm(null);
+                boardForm.setRowsPerPage(rowsPerPage);
                 includedWord = "게시판 이름";
 
-            } else if (field.equals("rowsPerPage")) {
-                boardConfig.setBId(bId);
-                boardConfig.setBoardNm(boardNm);
-                boardConfig.setRowsPerPage(null);
-                includedWord = "페이지 당 게시글 수";
-            }
-
             BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
-                service.save(boardConfig);
+                service.save(boardForm);
             });
             System.out.println(field);
             System.out.println(thrown.getMessage());
@@ -182,11 +175,11 @@ public class BoardConfigTest {
     @DisplayName("bId 중복 등록 시 DuplicateCateBIdException 발생 여부")
     void DuplicateCateBIdTest() {
         // 테스트 전 분류 등록
-        service.save(boardConfig);
+        service.save(boardForm);
 
-        assertThrows(DuplicateBIdException.class, () -> {
+        assertThrows(DuplicateBoardConfigException.class, () -> {
            // 중복 분류로 등록
-           service.save(boardConfig);
+           service.save(boardForm);
         });
     }
 
@@ -195,10 +188,10 @@ public class BoardConfigTest {
     @DisplayName("rowsPerPage : 최소 10부터 되는지 체크")
     void rowsPerPageMinTest() {
         assertThrows(BadRequestException.class, () -> {
-            boardConfig.setRowsPerPage(9L);
-            service.save(boardConfig);
+            boardForm.setRowsPerPage(9);
+            service.save(boardForm);
         });
-        System.out.println(boardConfig);
+        System.out.println(boardForm);
     }
 
     /** 3. category: '\n' 줄바꿈울 기준으로 인식 되는지 */
@@ -206,9 +199,9 @@ public class BoardConfigTest {
     @DisplayName("category: '\n' 줄바꿈울 기준으로 인식 되는지")
     void categoryEnterTest() {
         // textarea, split
-        boardConfig.setCategory("분류1\n분류2\n분류3\n");
-        service.save(boardConfig);
-        System.out.println(boardConfig);
+        boardForm.setCategory("분류1\n분류2\n분류3\n");
+        service.save(boardForm);
+        System.out.println(boardForm);
     }
 
     /**
@@ -218,18 +211,18 @@ public class BoardConfigTest {
     @DisplayName("성공적으로 등록완료되면 /admin/board 이동")
     void configSuccessRedirectTest() throws Exception {
         mockMvc.perform(post("/admin/board")
-                .param("bId", boardConfig.getBId())
-                .param("boardNm", boardConfig.getBoardNm())
-                .param("isUse", String.valueOf(boardConfig.isUse()))
-                .param("rowsPerPage", String.valueOf(boardConfig.getRowsPerPage()))
-                .param("useViewList", String.valueOf(boardConfig.isUseViewList()))
-                .param("category", boardConfig.getCategory())
-                .param("viewType", boardConfig.getViewType())
-                .param("useEditor", String.valueOf(boardConfig.isUseEditor()))
-                .param("afterWriteTarget", boardConfig.getAfterWriteTarget())
-                .param("useComment", String.valueOf(boardConfig.isUseComment()))
-                .param("skin", boardConfig.getSkin())
-                .param("isReview", String.valueOf(boardConfig.isReview())).with(csrf()))
+                .param("bId", boardForm.getBId())
+                .param("boardNm", boardForm.getBoardNm())
+                .param("isUse", String.valueOf(boardForm.isUse()))
+                .param("rowsPerPage", String.valueOf(boardForm.getRowsPerPage()))
+                .param("useViewList", String.valueOf(boardForm.isUseViewList()))
+                .param("category", boardForm.getCategory())
+                .param("viewType", boardForm.getViewType())
+                .param("useEditor", String.valueOf(boardForm.isUseEditor()))
+                .param("afterWriteTarget", boardForm.getAfterWriteTarget())
+                .param("useComment", String.valueOf(boardForm.isUseComment()))
+                .param("skin", boardForm.getSkin())
+                .param("isReview", String.valueOf(boardForm.isReview())).with(csrf()))
                 .andExpect(redirectedUrl("/admin/board"));
 
     }
@@ -253,12 +246,12 @@ public class BoardConfigTest {
     @Test
     @DisplayName("중복 등록 Bean Validation 검증 체크")
     void duplicateBIdCheckResponseTest() throws Exception {
-        service.save(boardConfig);
+        service.save(boardForm);
 
         String body = mockMvc.perform(post("/admin/board")
-                .param("bId", boardConfig.getBId())
-                .param("boardNm", boardConfig.getBoardNm())
-                .param("rowsPerPage", String.valueOf(boardConfig.getRowsPerPage())).with(csrf()))
+                .param("bId", boardForm.getBId())
+                .param("boardNm", boardForm.getBoardNm())
+                .param("rowsPerPage", String.valueOf(boardForm.getRowsPerPage())).with(csrf()))
                 .andReturn().getResponse().getContentAsString();
 
         String message = MessageBundle.getMessage("Duplicate.boardConfig.bId");
