@@ -29,8 +29,8 @@
         </li>
         <!-- 전화번호 -->
         <li class="rows">
-            <input type="text" name="cellPhone" th:field="*{cellphone}" th:placeholder="#{cellPhone}">
-            <div class="error" th:each="err : ${#fields.errors('cellphone')}" th:text="${err}"></div>
+            <input type="text" name="cellPhone" th:field="*{cellPhone}" th:placeholder="#{cellPhone}">
+            <div class="error" th:each="err : ${#fields.errors('cellPhone')}" th:text="${err}"></div>
         </li>
         <!-- 생년월일 -->
         <li class="rows flex">

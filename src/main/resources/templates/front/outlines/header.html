@@ -19,7 +19,7 @@
                 <div class="buttons">
                     <th:block sec:authorize="isAuthenticated()">
                         <a th:href="@{/user/logout}" th:text="#{user.logout}" class="btn1">로그아웃</a>
-                        <a th:href="@{/user/mypage}" th:text="#{mypage}" class="btn1 red">마이페이지</a>
+                        <a th:href="@{/user/mypage/edit}" th:text="#{mypage}" class="btn1 red">마이페이지</a>
                     </th:block>
                     <th:block sec:authorize="isAnonymous()">
                         <a th:href="@{/user/login}" th:text="#{user.login}" class="btn1">로그인</a>

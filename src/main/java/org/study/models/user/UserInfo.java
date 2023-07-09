@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.study.commons.constants.Gender;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -26,6 +24,8 @@ public class UserInfo implements UserDetails {
     private String userNickNm;
     private String cellPhone;
     private String gender;
+    private String nowPw; // 마이페이지 비밀번호 체크용
+    private String userPwCk; // 비밀번호 확인
 
     // 탈퇴일자에 필요한 맴버 변수
     // private LocalDateTime exitDate;

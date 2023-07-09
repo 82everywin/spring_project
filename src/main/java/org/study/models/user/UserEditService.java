@@ -25,7 +25,7 @@ public class UserEditService {
 
         String updateNick = join.getUserNickNm();
         String updatePw = join.getUserPw();
-        String updatePhone = join.getCellphone();
+        String updatePhone = join.getCellPhone();
 
         UserInfo user = userUtils.getUser();
 

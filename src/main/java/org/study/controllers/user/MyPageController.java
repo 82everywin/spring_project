@@ -1,10 +1,7 @@
 package org.study.controllers.user;
 
 import jakarta.validation.Valid;
-import org.aspectj.weaver.MemberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.study.commons.UserUtils;
 import org.study.controllers.admin.cs.CsConfig;
 import org.study.controllers.admin.cs.QuestionConfig;
-import org.study.controllers.admin.study.StudyConfig;
 import org.study.controllers.user.user.UserEditValidator;
 import org.study.controllers.user.user.UserJoin;
-import org.study.entities.Question;
-import org.study.entities.User;
-import org.study.models.cs.*;
+import org.study.models.cs.CsRegisterService;
+import org.study.models.cs.QuestionRegisterService;
+import org.study.models.cs.QuestionValidator;
 import org.study.models.user.UserEditService;
 import org.study.models.user.UserInfo;
 
@@ -61,17 +57,14 @@ public class MyPageController {
 
     @GetMapping("/edit")
     public String myPage(Model model) {
-        UserJoin userJoin = new UserJoin();
-        model.addAttribute("userJoin",userJoin);
 
-        String userNm = userJoin.getUserNm();
-        model.addAttribute("userNm", userNm);
+        if (userUtils.isLogin()) {
+            UserInfo userInfo = userUtils.getUser();
+            model.addAttribute("userInfo", userInfo);
+            return "front/mypage/edit";
+        }
 
-        String userEmail = userJoin.getUserEmail();
-        model.addAttribute("userEmail", userEmail);
-
-
-        return "front/mypage/edit";
+        return "redirect:/front/user/login";
     }
 
     @PostMapping("/edit")

@@ -38,7 +38,7 @@ public class UserJoin {
 
     private String birth; //생년월일
 
-    private String cellphone; //휴대전화번호
+    private String cellPhone; //휴대전화번호
 
     @AssertTrue
     private boolean termsAgree; // 회원가입 약관 동의

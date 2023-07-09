@@ -49,7 +49,7 @@ public class UserJoinValidator implements Validator, CellPhoneValidator, Passwor
         String userNickNm= userJoin.getUserNickNm();
         String userNm= userJoin.getUserNm();
 
-        String cellPhone = userJoin.getCellphone();
+        String cellPhone = userJoin.getCellPhone();
         String birth = userJoin.getBirth();
 
         /** Null 값 && 빈 값(isBlank) 체크 */
@@ -102,7 +102,7 @@ public class UserJoinValidator implements Validator, CellPhoneValidator, Passwor
         /** 4. 휴대전화번호 검증 S */
         if (cellPhone != null && !cellPhone.isBlank()) {
             cellPhone = cellPhone.replaceAll("\\D", "");
-            userJoin.setCellphone(cellPhone);
+            userJoin.setCellPhone(cellPhone);
             if (!checkCellPhoneNumber(cellPhone)) {
                 errors.rejectValue("cellPhone", "Mobile.wrong");
             }
