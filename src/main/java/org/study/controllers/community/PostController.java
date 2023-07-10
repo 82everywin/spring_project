@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.study.commons.Pagination;
 import org.study.commons.UserUtils;
 import org.study.controllers.admin.board.BoardSearch;
+import org.study.controllers.admin.community.CommunitySearch;
 import org.study.entities.board.Board;
 import org.study.entities.board.Post;
 import org.study.models.Community.*;
@@ -30,11 +31,20 @@ public class PostController {
     private final PostInfoService infoService;
     private final PostSaveService saveService;
     private final PostListService listService;
+    private final PostAllListService allListService;
     private final UserUtils userUtils;
     private final HttpServletRequest request;
     private final UpdateHitService updateHitService;
     private final PostDeleteService deleteService;
     private Board board; // 게시판 설정
+
+    @GetMapping
+    public String index(@ModelAttribute CommunitySearch communitySearch, Model model) {
+        Page<Post> data = allListService.gets(communitySearch);
+        model.addAttribute("items", data.getContent());
+
+        return "front/community/community";
+    }
 
     /**
      * 게시글 목록
@@ -59,7 +69,7 @@ public class PostController {
         Pagination pagination = new Pagination(items, url);
         model.addAttribute("pagination", pagination);
 
-        return "board/list";
+        return "front/community/list";
     }
 
     /**
@@ -76,7 +86,7 @@ public class PostController {
             postForm.setPoster(userUtils.getUser().getUserNm());
         }
 
-        return "board/write";
+        return "front/community/register";
     }
 
     /**
@@ -97,7 +107,7 @@ public class PostController {
         PostForm postForm = new ModelMapper().map(post, PostForm.class);
         model.addAttribute("postForm", postForm);
 
-        return "board/update";
+        return "front/community/update";
     }
 
     @PostMapping("/save")

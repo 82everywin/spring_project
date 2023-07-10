@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.study.commons.constants.board.AfterWriteTarget;
 import org.study.commons.constants.board.SkinType;
-import org.study.commons.constants.board.ViewType;
 import org.study.commons.messageBundle.MessageBundle;
 import org.study.commons.validators.BadRequestException;
 import org.study.controllers.admin.board.BoardForm;

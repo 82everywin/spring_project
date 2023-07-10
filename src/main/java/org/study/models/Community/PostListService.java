@@ -23,6 +23,7 @@ public class PostListService {
     @Autowired
     private PostRepository postRepository;
 
+    /**  */
     public Page<Post> gets(BoardSearch boardSearch, String bId, String category) {
         QPost post = QPost.post;
         QBoard board = QBoard.board;
@@ -33,7 +34,6 @@ public class PostListService {
 
         page = page < 1 ? 1 : page;
         pageSize = pageSize < 1 ? 20 : pageSize;
-
 
         /** 분류 검색 S */
         if (bId != null && !bId.isBlank()){

@@ -9,7 +9,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import org.study.commons.constants.board.AfterWriteTarget;
 import org.study.commons.constants.board.SkinType;
-import org.study.commons.constants.board.ViewType;
 import org.study.controllers.admin.board.BoardForm;
 import org.study.models.board.BoardConfigSaveService;
 import org.study.models.board.BoardConfigInfoService;

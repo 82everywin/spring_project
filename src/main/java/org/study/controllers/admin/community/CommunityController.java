@@ -11,6 +11,7 @@ import org.study.commons.Pagination;
 import org.study.controllers.admin.board.BoardSearch;
 import org.study.entities.board.Board;
 import org.study.entities.board.Post;
+import org.study.models.Community.PostAllListService;
 import org.study.models.Community.PostListService;
 import org.study.models.board.BoardConfigInfoService;
 import org.study.repositories.board.PostRepository;
@@ -29,9 +30,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommunityController {
 
-    private final BoardConfigInfoService infoService;
     private final PostListService listService;
-    private final HttpServletRequest request;
+    private final PostAllListService allListService;
     private final BoardConfigInfoService configInfoService;
     private Board board; // 게시판 설정
 
@@ -42,23 +42,11 @@ public class CommunityController {
      * @return
      */
     @GetMapping
-    public String list(String bId, @RequestParam(value = "category", required = false) String categoryName,
-                       Model model, @ModelAttribute BoardSearch boardSearch) {
-        commonProcess(bId, "list", model);
+    public String list(@ModelAttribute CommunitySearch communitySearch, Model model) {
+        Page<Post> data = allListService.gets(communitySearch);
+        model.addAttribute("items", data.getContent());
 
-        Board board = infoService.get(bId, "list");
-        model.addAttribute("board", board);
-        model.addAttribute("category", categoryName);
-
-        // 카테고리별 조회하기
-        Page<Post> items = listService.gets(boardSearch, bId, categoryName);
-        model.addAttribute("postList", items.getContent());
-
-        String url = request.getRequestURI();
-        Pagination pagination = new Pagination(items, url);
-        model.addAttribute("pagination", pagination);
-
-        return "board/list";
+        return "admin/community/lists";
     }
 
 
