@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
+  <title th:if="${pageTitle != null}" th:text="${pageTitle}"></title>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/front/css/style.css}">
+  <link th:each="cssFile : ${addCss}" rel="stylesheet" type="text/css"
+        th:href="@{/front/css/{file}.css(file=${cssFile})}">
+  <th:block layout:fragment="addCss"></th:block>
+
+  <script th:src="@{/front/js/common.js}"></script>
+  <script th:each="jsFile : ${addScript}" th:src="@{/front/js/{file}.js(file=${jsFile})}"></script>
+  <th:block layout:fragment="addScript"></th:block>
+</head>
+<body th:class="${bodyClass}">
+<header th:replace="~{front/outlines/header::common}"></header>
+<aside th:replace="~{front/outlines/side::board}"></aside>
+
+<main layout:fragment="content"></main>
+
+<footer th:replace="~{front/outlines/footer::common}"></footer>
+<iframe name="ifrmProcess" class="dn"></iframe>
+</body>
+</html>

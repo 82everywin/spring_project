@@ -25,8 +25,6 @@ public class PostForm {
     @NotBlank
     private String poster; // 작성자
 
-    private String guestPw; // 비회원 비밀번호
-
     private String category; // 게시판 분류
 
     @NotBlank

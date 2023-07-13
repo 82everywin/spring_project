@@ -1,67 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/tymeleaf/layout"
-      layout:decorate="~{front/layouts/main}">
+      layout:decorate="~{front/layouts/communityMain}">
 
 <main layout:fragment="content">
-  <form method="post">
     <th:block th:replace="~{front/community/_board_title::title}"></th:block>
-
-    <table class="table-list">
-      <thead>
-      <tr>
-        <th>글번호</th>
-        <th>제목</th>
-        <th>글쓴이</th>
-        <th>작성일</th>
-        <th>조회수</th>
-        <th>좋아요</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="item : ${postList}" th:object="${item}">
-        <td class="list_num" th:text="*{id}" style="width: 8%;"></td>
-        <td id="list_subject" style="width: 45%;">
-          <a th:href="@{/board/view/{id}(id=*{id})}">
-            [[|[*{#strings.substring(category,0,2)}]*{subject}|]]
-          </a>
-        </td>
-        <td class="list_poster" th:text="*{poster}" style="width: 21%;"></td>
-        <td class="list_num" th:text="*{#temporals.format(createdAt, 'yyyy.MM.dd')}" style="width: 10%;">작성일 테스트</td>
-        <td class="list_num" th:text="*{hit}" style="width: 10%;"></td>
-        <td class="list_num">1</td>
-      </tr>
-      </tbody>
-    </table>
-  </form>
-
-  <div class="write_box">
-    <div class="r_btn">
-      <a class="sbtn carrot" th:href="@{/board/write/{bId}(bId=${board.bId})}">글쓰기</a>
-    </div>
-  </div>
-
-  <th:block th:replace="~{front/commons/_pagination::pagination}"></th:block>
-
-  <form name="frmSearch" method="get" th:object="${boardSearch}">
-    <div class="sch_btn_wrap">
-      <div class="sch_grp">
-        <select name="sopt">
-          <option value="subject_content">제목+내용</option>
-          <option value="subject">제목</option>
-          <option value="content">내용</option>
-          <option value="poster">글쓴이</option>
-        </select>
-      </div>
-      <div class="sch_box">
-        <div class="sch_bar">
-          <input type="text" name="skey" placeholder="검색어 입력">
+    <form name="frmSearch" method="get" th:object="${boardSearch}">
+        <div class="sch_btn_wrap">
+            <div class="sch_grp">
+                <select name="sopt">
+                    <option value="subject_content">제목+내용</option>
+                    <option value="subject">제목</option>
+                    <option value="content">내용</option>
+                    <option value="poster">글쓴이</option>
+                </select>
+            </div>
+            <div class="sch_box">
+                <div class="sch_bar">
+                    <input type="text" name="skey" placeholder="검색어 입력">
+                </div>
+                <button class="sch_btn" type="submit">
+                    <i class="xi-search"></i>
+                </button>
+            </div>
         </div>
-        <button class="sch_btn" type="submit">
-          <i class="xi-search"></i>
-        </button>
-      </div>
+    </form>
+    <div class="write_box">
+        <div class="btn1">
+            <a th:href="@{/user/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
+        </div>
     </div>
-  </form>
+    <nav class="menu_bar" >
+        <ul class="menu_bar_list">
+            <li th:each="board : ${boards}" th:object="${board}">
+                <a th:href="@{/board/list/{bid}(bid=${board.getBId()})}" th:text="*{bName}">Board1</a>
+                <ul class="sub_list">
+                    <li th:each="category : ${board.getCategories()}">
+                        <a th:href="@{/board/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}" th:text="${category}">Board1_1</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <form method="post">
+            <div class="userLists">
+                <ul>
+                    <li th:each="item : ${postList}" th:object="${item}">
+                        <div class="list-top">
+                            <span class="list_poster" th:text="*{poster}"></span>
+                            <span>·</span>
+                            <span class="list_num" th:text="*{#temporals.format(createdAt,'yyyy.MM.dd')}"></span>
+                        </div>
+                        <div class="list-mid">
+                            <a th:href="@{/user/community/view/{id}(id=*{id})}" th:text="*{subject}">
+<!--                                [[|[*{#strings.substring(category,0,2)}]*{subject}|]]-->
+                            </a>
+                        </div>
+                        <div class="list-bot">
+                            <span class="bot-right">
+                            <span class="viewCnt">
+                                <i class="xi-eye-o"></i>
+                                <span class="list_num" th:text="*{hit}"></span>
+                            </span>
+                            <span class="totalComments">
+                                <i class="xi-comment-o"></i>
+                                <span>1</span>
+                            </span>
+                        </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </section>
+        </th:block>
+    </form>
+    <th:block th:replace="~{front/commons/_pagination::pagination}"></th:block>
 </main>
 </html>

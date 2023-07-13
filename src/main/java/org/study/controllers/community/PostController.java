@@ -13,6 +13,7 @@ import org.study.commons.Pagination;
 import org.study.commons.UserUtils;
 import org.study.controllers.admin.board.BoardSearch;
 import org.study.controllers.admin.community.CommunitySearch;
+import org.study.entities.User;
 import org.study.entities.board.Board;
 import org.study.entities.board.Post;
 import org.study.models.Community.*;
@@ -83,7 +84,7 @@ public class PostController {
         commonProcess(bId, "write", model);
         postForm.setBId(bId);
         if (userUtils.isLogin()) {
-            postForm.setPoster(userUtils.getUser().getUserNm());
+            postForm.setPoster(userUtils.getUser().getUserNickNm());
         }
 
         return "front/community/register";
@@ -126,13 +127,13 @@ public class PostController {
 
         if (errors.hasErrors()) {
             errors.getAllErrors().forEach(System.out::println);
-            return "board/" + mode;
+            return "front/community/" + mode;
         }
         saveService.save(postForm);
 
         // 작성후 이동 설정 - 목록, 글보기
         String location = board.getAfterWriteTarget().toString();
-        String url = "redirect:/board/";
+        String url = "redirect:/user/community/";
         url += location.equals("view") ? "view/" + postForm.getId() : "list/" + postForm.getBId();
 
         return url;
@@ -150,7 +151,7 @@ public class PostController {
 
         updateHitService.update(id); // 게시글 조회수 업데이트
 
-        return "board/view";
+        return "front/community/view";
     }
 
     @GetMapping("/delete/{id}")
@@ -161,13 +162,13 @@ public class PostController {
         commonProcess(bid, "update", model);
 
         // 삭제 권한 체크
-        updateDeletePossibleCheck(post, "board_delete");
+        updateDeletePossibleCheck(post);
 
         // 삭제 처리
         deleteService.delete(id);
 
         // 삭제 완료시 게시글 목록으로 이동
-        return "redirect:/board/list/" + bid;
+        return "redirect:/user/community/list/" + bid;
     }
 
     private void commonProcess(String bId, String action, Model model) {
@@ -211,16 +212,21 @@ public class PostController {
      * - 회원 : 작성한 회원
      * - 관리자 : 가능
      */
-    public void updateDeletePossibleCheck(Post post, String mode) {
+    public void updateDeletePossibleCheck(Post post) {
         if (userUtils.isAdmin()) { // 관리자는 무조건 가능
             return;
         }
-        if (userUtils.isLogin() && userUtils.getUser().getUserNo() != post.getUser().getUserNo()) {
+
+        if (userUtils.isLogin() &&
+                userUtils.getUser().getUserNo() != post.getUser().getUserNo()) {
+            System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+            System.out.println(userUtils.getUser().getUserNo() + post.getUser().getUserNo());
             throw new BoardNotAllowAccessException();
         }
     }
 
-    public void updateDeletePossibleCheck(Post post) {
-        updateDeletePossibleCheck(post, null);
+    public void updateDeletePossibleCheck(Long id) {
+        Post post = infoService.get(id, "update");
+        updateDeletePossibleCheck(post);
     }
 }

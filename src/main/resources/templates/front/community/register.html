@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{front/layouts/main}">
+      layout:decorate="~{front/layouts/communityMain}">
 <section layout:fragment="content">
-    <form class="form" method="post" th:action="@{/user/community/save}" autocomplete="off">
+    <form class="form" method="post" th:action="@{/user/community/save}" autocomplete="off" th:object="${postForm}">
+        <input type="hidden" name="bId" th:field="*{bId}">
+        <input type="hidden" name="gid" th:field="*{gid}">
         <th:block th:replace="~{front/community/_configForm::form}"></th:block>
         <div class="btn">
             <button type="button" class="btn1">
                 <a th:href="@{/user/community}">취소하기</a>
             </button>
-            <button type="submit" class="submit_btn">등록하기</button>
+            <button type="submit" class="btn1">등록하기</button>
         </div>
     </form>
 </section>

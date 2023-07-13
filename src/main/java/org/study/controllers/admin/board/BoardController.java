@@ -72,7 +72,7 @@ public class BoardController {
         deleteService.delete(bId);
 
         // 삭제 완료시 게시글 목록으로 이동
-        return "redirect:/admin/board";
+        return "redirect:/admin/community";
     }
 
     /**

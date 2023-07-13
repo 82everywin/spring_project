@@ -1,67 +1,98 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="form">
-    <div class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
-    <div class="search">
-        <span class="search-text">
-            <input type="text" spellcheck="false" placeholder="커뮤니티 검색" enterkeyhint="search">
-            <button class="btn1">검색</button>
-        </span>
-        <span class="search-text">
-            <input type="text" spellcheck="false" placeholder="태그 검색" enterkeyhint="search">
-        </span>
-        <nav class="tabs">
-            <button class="btn1">
-                <a th:href="@{/user/community}">전체</a>
-            </button>
-            <button class="btn1">
-                <a th:href="@{/user/community/free}">자유게시판</a>
-            </button>
-            <button class="btn1">
-                <a th:href="@{/user/community/qna}">질문과답변</a>
-            </button>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/tymeleaf/layout"
+      layout:decorate="~{front/layouts/main}">
 
-            <button class="btn1">
-                <a th:href="@{/user/community/register}">글쓰기</a>
-            </button>
-        </nav>
+<main layout:fragment="content">
+    <th:block th:replace="~{front/community/_board_title::title}"></th:block>
+    <form name="frmSearch" method="get" th:object="${communitySearch}">
+        <div class="sch_btn_wrap">
+            <div class="sch_grp">
+                <select name="sopt">
+                    <option value="subject_content">제목+내용</option>
+                    <option value="subject">제목</option>
+                    <option value="content">내용</option>
+                    <option value="poster">글쓴이</option>
+                </select>
+            </div>
+            <div class="sch_box">
+                <div class="sch_bar">
+                    <input type="text" name="skey" placeholder="검색어 입력">
+                </div>
+                <button class="sch_btn" type="submit">
+                    <i class="xi-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+    <nav class="menu_bar">
+        <ul class="menu_bar_list">
+            <li th:each="board : ${boards}" th:object="${board}">
+                <a th:href="@{/board/list/{bid}(bid=${board.getBId()})}" th:text="*{bName}">Board1</a>
+                <ul class="sub_list">
+                    <li th:each="category : ${board.getCategories()}">
+                        <a th:href="@{/board/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}"
+                           th:text="${category}">Board1_1</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <form method="post">
+        <!--            <nav class="tabs">-->
+        <!--                <button class="btn1">-->
+        <!--                    <a th:href="@{/user/community}">전체</a>-->
+        <!--                </button>-->
+        <!--                <button class="btn1">-->
+        <!--                    <a th:href="@{/user/community/free}">자유게시판</a>-->
+        <!--                </button>-->
+        <!--                <button class="btn1">-->
+        <!--                    <a th:href="@{/user/community/qna}">질문과답변</a>-->
+        <!--                </button>-->
+
+        <!--                <button class="btn1">-->
+        <!--                    <a th:href="@{/user/community/register}">글쓰기</a>-->
+        <!--                </button>-->
+        <!--            </nav>-->
         <div class="userLists">
             <ul>
-                <li th:each="data : ${datas}" th:object="${data}">
+                <li th:each="item : ${postList}" th:object="${item}">
                     <div class="list-top">
-                        <span th:text="*{userNm}"></span>
+                        <span class="list_poster" th:text="*{poster}"></span>
                         <span>·</span>
-                        <span><!-- DB에서 생성일자 자동 추가 -->2023-04-19</span>
+                        <span class="list_num" th:text="*{#temporals.format(createdAt, 'yyyy.MM.dd')}"></span>
                     </div>
                     <div class="list-mid">
-                        <a href="#"><!-- 게시글 이동 -->백엔드 공부하려면 어떻게 해야하나요?</a>
+                        <a th:href="@{/board/view/{id}(id=*{id})}">
+                            [[|[*{#strings.substring(category,0,2)}]*{subject}|]]
+                        </a>
                     </div>
                     <div class="list-bot">
-                        <span class="bot-left">
-                            <a href="#"><!-- 선택한 카테고리로 이동 -->질문과 답변</a>
-                            <span class="tags">
-                                <a href="#"><!-- 태그 검색결과 이동(#OO) -->#개발</a>
-                                <!-- 태그 개수마다  자동으로 추가 -->
-                            </span>
-                        </span>
+                        <!--                        <span class="bot-left">-->
+                        <!--                            <a href="#">&lt;!&ndash; 선택한 카테고리로 이동 &ndash;&gt;질문과 답변</a>-->
+                        <!--                            <span class="tags">-->
+                        <!--                                <a href="#">&lt;!&ndash; 태그 검색결과 이동(#OO) &ndash;&gt;#개발</a>-->
+                        <!--                                &lt;!&ndash; 태그 개수마다  자동으로 추가 &ndash;&gt;-->
+                        <!--                            </span>-->
+                        <!--                        </span>-->
                         <span class="bot-right">
                             <span class="viewCnt">
                                 <i class="xi-eye-o"></i>
-                                <span><!-- 조회수 자동 증가 -->300</span>
+                                <span class="list_num" th:text="*{hit}"></span>
                             </span>
                             <span class="totalComments">
                                 <i class="xi-comment-o"></i>
-                                <span><!-- 댓글 수에 따라 자동 증가 -->10</span>
+                                <span>1</span>
                             </span>
                         </span>
                     </div>
                 </li>
-                <!-- 게시글 생성되면 최신순으로 자동 추가 -->
-                <!-- 게시글 생성되면 최신순으로 자동 추가 -->
-                <!-- 게시글 생성되면 최신순으로 자동 추가 -->
             </ul>
         </div>
-    </div>
-    </section>
-</th:block>
+        <th:block th:replace="~{front/commons/_pagination::pagination}"></th:block>
+        </div>
+        </section>
+        </th:block>
+    </form>
+</main>
 </html>

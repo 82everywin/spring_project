@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{front/layouts/main}">
+      layout:decorate="~{front/layouts/communityMain}">
 <section layout:fragment="content">
     <form method="post" th:action="@{/user/community}" autocomplete="off">
         <th:block th:replace="~{front/community/_form::form}"></th:block>

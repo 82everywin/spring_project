@@ -1,39 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="form" th:object="${postConfig}">
+<th:block th:fragment="form" th:object="${postForm}">
     <div class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
-    <div class="gid">
-        <label for="gid">그룹 아이디</label>
-        <th:block th:if="${mode != null && mode == 'update'}">
-            <!-- 모드가 수정일 때는 수정이 보이고 -->
-            <!-- 수정이면 게시글 아이디 보여주기 -->
-            [[*{gid}]]
-            <input type="hidden" id="gid" name="gid" th:field="*{gid}">
-        </th:block>
-        <input th:unless="${mode != null && mode == 'update'}" type="text" name="gid" th:field="*{gid}">
+<!--    <input th:if="${board.useAttachImage && board.useAttachFile}" type="file" id="file" class="dn">-->
+    <div class="poster">
+        <label for="poster">작성자</label>
+        <input id="poster" type="text" name="poster" th:field="*{poster}">
+        <div class="errors" th:each="err : ${#fields.errors('poster')}" th:text="${err}"></div>
     </div>
-    <div class="category">
+    <div class="category" th:if="${board.categories != null}">
         <label for="category">카테고리</label>
         <div>
-            <select id="category" autocomplete="category" name="category" th:field="*{category}">
-                <option value="">카테고리를 선택해주세요.</option>
-                <option value="qna">질문과답변</option>
-                <option value="free">자유게시판</option>
-            </select>
+            <th:block th:each="category, status : ${board.categories}">
+                <input type="radio" id="category" name="category" th:value="${category}"
+                       th:id="${'category_' + status.index}">
+                <label th:for="${'category_' + status.index}" th:text="${category}"></label>
+            </th:block>
             <div class="error" th:each="err : ${#fields.errors('category')}" th:text="${err}"></div>
         </div>
     </div>
-    <div class="title">
+    <div class="subject">
         <label for="subject">제목</label>
         <input type="text" id="subject" name="subject" placeholder="제목을 입력하세요." th:field="*{subject}">
         <div class="error" th:each="err : ${#fields.errors('subject')}" th:text="${err}"></div>
-    </div>
-    <div class="tags">
-        태그 -
-        <span>내용을 대표하는 태그를 입력해주세요.</span>
-        <div>
-            <input type="text" name="tags" id="tags" placeholder="태그를 입력해주세요.">
-        </div>
     </div>
     <div class="content">
         <label>내용</label>
@@ -41,7 +30,15 @@
     <div aria-placeholder="내용을 입력해주세요.">
         <textarea name="content" id="content" th:field="*{content}"></textarea>
         <div class="error" th:each="err : ${#fields.errors('content')}" th:text="${err}"></div>
-        <!-- 에디터 추가 -->
+<!--        <th:block th:if="${board.useEditor && board.useAttachImage}">-->
+<!--            <button type="button" class="attachFiles image">이미지 첨부</button>-->
+<!--            <div class="attachedFiles images"></div>-->
+<!--        </th:block>-->
     </div>
+<!--    <div th:if="${board.useAttachFile == true}">-->
+<!--        <label for="file">파일 첨부</label>-->
+<!--        <button type="button" id="file" class="attachFiles">파일 첨부</button>-->
+<!--        <div class="attachedFiles files"></div>-->
+<!--    </div>-->
 </th:block>
 </html>

@@ -40,11 +40,9 @@ public class PostSaveService {
                     .ip(ip)
                     .ua(ua)
                     .build();
-            if (userUtil.isLogin()) { // 로그인 시 - 회원 데이터
-                post.setUser(userUtil.getEntity());
-            } else {
-                // 게시글 작성 금지
-            }
+            post.setBoard(board);
+            post.setUser(userUtil.getEntity());
+
         } else { // 게시글 수정
             post = repository.findById(postForm.getId()).orElseThrow(PostNotFoundException::new);
             post.setPoster(postForm.getPoster());

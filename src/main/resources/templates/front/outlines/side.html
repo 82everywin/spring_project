@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<aside th:fragment="board" class="board_bar">
+    <nav class="board_bar">
+        <ul class="menu_bar_list">
+            <li th:each="board : ${boards}" th:object="${board}">
+                <a th:href="@{/user/community/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+</html>
