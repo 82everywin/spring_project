@@ -1,5 +1,6 @@
 package org.study.controllers.admin.board;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -24,6 +25,8 @@ import java.util.List;
 @RequestMapping("admin/board")
 public class BoardController {
     @Autowired
+    private HttpServletRequest request;
+    @Autowired
     private BoardConfigSaveService saveService;
     @Autowired
     private BoardConfigInfoService infoService;
@@ -35,6 +38,8 @@ public class BoardController {
     /** <게시판관리> 클릭하면 나오는 페이지 == 게시판목록 */
     @GetMapping
     public String index(@ModelAttribute BoardSearch boardSearch, Model model) {
+        commonProcess(model, "게시판 목록");
+
         Page<Board> data = listService.gets(boardSearch);
         model.addAttribute("items", data.getContent());
 
@@ -43,15 +48,17 @@ public class BoardController {
 
     /** 게시판 등록  (세부목록 클릭시 ) */
     @GetMapping("/register")
-    public String register(@ModelAttribute BoardForm boardForm) {
+    public String register(@ModelAttribute BoardForm boardForm, Model model) {
+        commonProcess(model, "게시판 등록");
+
         return "admin/board/register";
     }
 
     /** 게시판 상세 -> 게시판 수정 & 삭제 가능 */
     @GetMapping("/{bId}/update")
-    public String update(@PathVariable String bId, Model model, HttpServletResponse response) {
-        model.addAttribute("mode", "update");
-//        try {
+    public String update(@PathVariable String bId, Model model) {
+        commonProcess(model, "게시판 수정");
+
             Board board = infoService.get(bId, true);
             BoardForm boardForm = new ModelMapper().map(board, BoardForm.class);
             boardForm.setMode("update"); // 모드 update로 설정
@@ -62,17 +69,15 @@ public class BoardController {
             boardForm.setCommentAccessRole(board.getCommentAccessRole().toString());
 
             model.addAttribute("boardForm", boardForm);
-//        } catch (CommonException e) {
-//            response.setStatus(e.getStatus().value());
-//            model.addAttribute("script", "alert('" + e.getMessage() + "');history.back();");
-//            return "commons/execute_script";
-//        }
+
         return "admin/board/update";
     }
 
     /** 게시판 삭제 */
     @GetMapping("/delete/{bId}")
-    public String delete(@PathVariable String bId) {
+    public String delete(@PathVariable String bId, Model model) {
+        commonProcess(model, "게시판 삭제");
+
         deleteService.delete(bId);
 
         // 삭제 완료시 게시글 목록으로 이동
@@ -89,8 +94,9 @@ public class BoardController {
      * @return
      */
     @PostMapping("/save")
-    public String save(@Valid BoardForm boardForm, Errors errors) {
+    public String save(@Valid BoardForm boardForm, Errors errors, Model model) {
         String mode = boardForm.getMode();
+        commonProcess(model, mode != null && mode.equals("update") ? "게시판 수정" : "게시판 등록");
 
         try {
             saveService.save(boardForm, errors);
@@ -103,7 +109,20 @@ public class BoardController {
             String tpl = mode == null ? "register" : "update";
             return "admin/board/" + tpl;
         }
-
         return "redirect:/admin/board"; // 게시판 등록&수정 후 목록으로 이동
+    }
+
+    private void commonProcess(Model model, String title){
+        // 서브 메뉴 코드
+        String subMenuCode = Menus.getSubMenuCode(request);
+        subMenuCode = title.equals("게시판 수정") ? "register" : subMenuCode;
+        model.addAttribute("subMenuCode", subMenuCode);
+
+        List<MenuForm> submenus = Menus.gets("board");
+        model.addAttribute("submenus",submenus);
+
+        model.addAttribute("pageTitle", title);
+        model.addAttribute("title", title);
+        model.addAttribute("menuCode", "board");
     }
 }

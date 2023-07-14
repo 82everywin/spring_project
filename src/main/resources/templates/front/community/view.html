@@ -4,7 +4,7 @@
       layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content" th:object="${post}">
-    <section>
+    <section class="main_intro">
         <div class="view_content_wrap">
             <div class="post_wrap">
                 <div class="post_top">
@@ -12,18 +12,15 @@
                         <th:block th:text="*{user.userNickNm}"></th:block>
                     </h2> <!-- 제목 -->
                     <h1><span th:text="*{subject}"></span></h1>
-                    <div class="post_info">
-                        <div class="post_info_left">
-                            <span>
-                            IP : [[*{ip}]]
+                    <div class="desc">
+                        <div class="info_txt">
+                            <span>IP : [[*{ip}]]
                         </span>
-                            <span>
-                            | [[#{board.createdAt}]] : [[*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}]]
-                        </span>
+                            <span>[[*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}]]</span>
                         </div>
                         <div class="post_info_right">
                         <span>
-                            [[#{board.hit}]] :
+                            조회수 :
                 <th:block th:if="*{hit < 1000}" th:text="*{hit}"></th:block>
                 <th:block th:unless="*{hit < 1000}" th:text="*{#numbers.formatInteger(hit, 3)}"></th:block>
                         </span>

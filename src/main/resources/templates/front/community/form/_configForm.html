@@ -2,43 +2,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="form" th:object="${postForm}">
     <div class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
-<!--    <input th:if="${board.useAttachImage && board.useAttachFile}" type="file" id="file" class="dn">-->
-    <div class="poster">
-        <label for="poster">작성자</label>
-        <input id="poster" type="text" name="poster" th:field="*{poster}">
-        <div class="errors" th:each="err : ${#fields.errors('poster')}" th:text="${err}"></div>
-    </div>
-    <div class="category" th:if="${board.categories != null}">
-        <label for="category">카테고리</label>
-        <div>
-            <th:block th:each="category, status : ${board.categories}">
-                <input type="radio" id="category" name="category" th:value="${category}"
-                       th:id="${'category_' + status.index}">
-                <label th:for="${'category_' + status.index}" th:text="${category}"></label>
-            </th:block>
-            <div class="error" th:each="err : ${#fields.errors('category')}" th:text="${err}"></div>
-        </div>
-    </div>
-    <div class="subject">
-        <label for="subject">제목</label>
-        <input type="text" id="subject" name="subject" placeholder="제목을 입력하세요." th:field="*{subject}">
-        <div class="error" th:each="err : ${#fields.errors('subject')}" th:text="${err}"></div>
-    </div>
-    <div class="content">
-        <label>내용</label>
-    </div>
-    <div aria-placeholder="내용을 입력해주세요.">
-        <textarea name="content" id="content" th:field="*{content}"></textarea>
-        <div class="error" th:each="err : ${#fields.errors('content')}" th:text="${err}"></div>
-<!--        <th:block th:if="${board.useEditor && board.useAttachImage}">-->
-<!--            <button type="button" class="attachFiles image">이미지 첨부</button>-->
-<!--            <div class="attachedFiles images"></div>-->
-<!--        </th:block>-->
-    </div>
-<!--    <div th:if="${board.useAttachFile == true}">-->
-<!--        <label for="file">파일 첨부</label>-->
-<!--        <button type="button" id="file" class="attachFiles">파일 첨부</button>-->
-<!--        <div class="attachedFiles files"></div>-->
-<!--    </div>-->
+    <dl>
+        <dt>작성자</dt>
+        <dd>
+            <input type="text" name="poster" th:field="*{poster}">
+            <div class="errors" th:each="err : ${#fields.errors('poster')}" th:text="${err}"></div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>카테고리</dt>
+        <dd th:if="${board.categories != null}">
+            <div>
+                <th:block th:each="category, status : ${board.categories}">
+                    <input type="radio" name="category" th:value="${category}" th:id="${'category_' + status.index}">
+                    <label th:for="${'category_' + status.index}" th:text="${category}"></label>
+                </th:block>
+                <div class="error" th:each="err : ${#fields.errors('category')}" th:text="${err}"></div>
+            </div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>제목</dt>
+        <dd>
+            <input type="text" id="subject" name="subject" placeholder="제목을 입력하세요." th:field="*{subject}">
+            <div class="error" th:each="err : ${#fields.errors('subject')}" th:text="${err}"></div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>내용</dt>
+        <dd>
+            <div aria-placeholder="내용을 입력해주세요.">
+                <textarea name="content" id="content" th:field="*{content}"></textarea>
+                <div class="error" th:each="err : ${#fields.errors('content')}" th:text="${err}"></div>
+                <input type="file" id="file1" class="files dn" th:data-gid="*{gid}" th:data-location="editor" data-image-only="true">
+                <button type="button" class="fileUpload btn1 mt10" data-target-id="file1">이미지 첨부</button>
+<!--                <div class="attachFiles">-->
+<!--                    <li th:if="*{editorFiles != null}" th:each="file : *{editorFiles}" th:object="${file}" th:class="*{'file_' + fileNo}">-->
+<!--                        <a th:href="@{/file/download/{no}(no=*{fileNo})}" th:text="*{originalFilename}"></a>-->
+<!--                        <span class="xi-arrow-up insert_editor" th:data-url="*{fileURL}"></span>-->
+<!--                        <a class='xi-close remove' th:href="@{/file/delete/{no}(no=*{fileNo})}" onclick="return confirm('정말 삭제하시겠습니까?');" target="ifrmProcess"></a>-->
+<!--                    </li>-->
+<!--                </div>-->
+            </div>
+        </dd>
+    </dl>
+    <script th:replace="~{front/commons/_image_file_tpl::tpl}"></script>
+    <script th:replace="~{front/commons/_file_tpl::tpl}"></script>
 </th:block>
 </html>

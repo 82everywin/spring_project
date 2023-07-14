@@ -148,6 +148,8 @@ public class PostController {
 
         model.addAttribute("post", post);
         model.addAttribute("board", board);
+        model.addAttribute("addCss", new String[] { "community/view" });
+        model.addAttribute("addScript", new String[] { "community/view" });
 
         updateHitService.update(id); // 게시글 조회수 업데이트
 

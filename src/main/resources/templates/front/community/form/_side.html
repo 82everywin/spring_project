@@ -2,9 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <aside th:fragment="board_menus">
     <ul th:if="${board != null}">
-        <li th:each="board, status : ${boards}" th:object="${board}">
-            <input type="radio" name="bId" th:value="*{bId}" th:field="${communitySearch.bId}" th:id="${'bId_' + status.index}">
-            <label th:for="${'cateCd_' + status.index}">[[*{cateNm}]]</label>
+        <li th:each="board : ${boards}" th:object="${board}">
+            <a th:href="@{/board/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>
         </li>
     </ul>
 </aside>
