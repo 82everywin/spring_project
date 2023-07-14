@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user/community")
+@RequestMapping("/community")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -133,7 +133,7 @@ public class PostController {
 
         // 작성후 이동 설정 - 목록, 글보기
         String location = board.getAfterWriteTarget().toString();
-        String url = "redirect:/user/community/";
+        String url = "redirect:/community/";
         url += location.equals("view") ? "view/" + postForm.getId() : "list/" + postForm.getBId();
 
         return url;
@@ -168,7 +168,7 @@ public class PostController {
         deleteService.delete(id);
 
         // 삭제 완료시 게시글 목록으로 이동
-        return "redirect:/user/community/list/" + bid;
+        return "redirect:/community/list/" + bid;
     }
 
     private void commonProcess(String bId, String action, Model model) {
@@ -219,8 +219,6 @@ public class PostController {
 
         if (userUtils.isLogin() &&
                 userUtils.getUser().getUserNo() != post.getUser().getUserNo()) {
-            System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-            System.out.println(userUtils.getUser().getUserNo() + post.getUser().getUserNo());
             throw new BoardNotAllowAccessException();
         }
     }

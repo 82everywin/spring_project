@@ -9,12 +9,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.study.commons.MenuForm;
+import org.study.commons.Menus;
 import org.study.commons.validators.CommonException;
 import org.study.entities.board.Board;
 import org.study.models.board.BoardConfigDeleteService;
 import org.study.models.board.BoardConfigSaveService;
 import org.study.models.board.BoardConfigInfoService;
 import org.study.models.board.BoardConfigListService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("admin/board")

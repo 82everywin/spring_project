@@ -11,6 +11,7 @@ public class CommunitySearch {
 
     private int page = 1;
     private int limit = 20;
+    private String bId;
     private Long gid;
     private String poster;
     private String subject;

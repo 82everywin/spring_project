@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="lists">
+  <ul th:if="${items}" class="board_items">
+    <li th:each="item : ${items}" th:object="${item}">
+      <a th:href="@{/community/view/{id}(id=*{id})}">
+        <div class="image" th:if="*{mainImages != null}" th:style="*{'background:url(' + mainImages[0].fileURL + '); background-size:cover'}"></div>
+        <div class="tit" th:text="*{simpleIntro}"></div>
+
+        <div class="info_txt" th:if="*{user != null }">
+          <i class="xi-speech"></i>
+          [[*{user.userNm}]]([[*{user.userEmail}]])
+        </div>
+        <div class="info_txt">
+          <i class="xi-maker"></i>
+          <th:block th:if="*{regionType.toString() == 'OFFLINE'}">
+            [[*{sido}]] [[*{sigugun}]]
+          </th:block>
+          <th:block th:if="*{regionType.toString() == 'ONLINE'}">
+            온라인
+          </th:block>
+        </div>
+        <div class="info_txt">
+          <i class="xi-group"></i>
+          <th:block th:if="*{maxMember == 0}">무제한</th:block>
+          <th:block th:if="*{maxMember > 0}">
+            <span class="current">1</span> /
+            <span class="maxMember">[[*{maxMember}]]</span>
+          </th:block>
+        </div>
+        <div class="info_txt">
+          <i class="xi-calendar-list"></i>
+          주 [[*{numOfWeek}]]회
+        </div>
+      </a>
+    </li>
+  </ul>
+</th:block>
+</html>

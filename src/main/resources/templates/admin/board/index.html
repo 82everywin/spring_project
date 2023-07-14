@@ -38,7 +38,7 @@
                 <th width="150">게시판 ID</th>
                 <th width="300">게시판명</th>
                 <th width="150">사용여부</th>
-                <th width="600"></th>
+                <th width="600">비고</th>
             </tr>
             </thead>
             <tbody>
@@ -50,10 +50,10 @@
                 <td align="center" th:text="*{bId}"></td>
                 <td align="center" th:text="*{boardNm}"></td>
                 <td align="center" th:text="*{Use}"></td>
-                <td>
+                <td align="center">
                     <a th:href="@{/admin/board/{bId}/update(bId=*{bId})}" class="btn1">설정 수정</a>
-                    <a th:href="@{/board/list/{bId}(bId=*{bId})}" class="btn1">미리보기</a>
-                    <a th:href="@{/board/write/{bId}(bId=*{bId})}" class="btn1">글쓰기</a>
+                    <a th:href="@{/community/list/{bId}(bId=*{bId})}" class="btn1">미리보기</a>
+                    <a th:href="@{/community/write/{bId}(bId=*{bId})}" class="btn1">글쓰기</a>
                 </td>
             </tr>
             </tbody>

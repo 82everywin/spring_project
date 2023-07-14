@@ -4,10 +4,10 @@
       layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content">
-    <th:block th:replace="~{front/community/_board_title::title}"></th:block>
-    <form name="frmSearch" method="get" th:object="${communitySearch}">
-        <div class="sch_btn_wrap">
-            <div class="sch_grp">
+    <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
+    <form id="frmList" name="frmList" method="get" autocomplete="off" th:object="${communitySearch}">
+        <section class="list_contents">
+            <div class="top_search">
                 <select name="sopt">
                     <option value="subject_content">제목+내용</option>
                     <option value="subject">제목</option>
@@ -15,23 +15,20 @@
                     <option value="poster">글쓴이</option>
                 </select>
             </div>
-            <div class="sch_box">
-                <div class="sch_bar">
+            <div class="search_box">
                     <input type="text" name="skey" placeholder="검색어 입력">
-                </div>
-                <button class="sch_btn" type="submit">
-                    <i class="xi-search"></i>
-                </button>
+                <button type="submit"><i class="xi-search"></i></button>
             </div>
-        </div>
+        </section>
     </form>
+
     <nav class="menu_bar">
         <ul class="menu_bar_list">
             <li th:each="board : ${boards}" th:object="${board}">
-                <a th:href="@{/board/list/{bid}(bid=${board.getBId()})}" th:text="*{bName}">Board1</a>
+                <a th:href="@{/community/list/{bid}(bid=${board.getBId()})}" th:text="*{bName}">Board1</a>
                 <ul class="sub_list">
                     <li th:each="category : ${board.getCategories()}">
-                        <a th:href="@{/board/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}"
+                        <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}"
                            th:text="${category}">Board1_1</a>
                     </li>
                 </ul>
@@ -63,7 +60,7 @@
                         <span class="list_num" th:text="*{#temporals.format(createdAt, 'yyyy.MM.dd')}"></span>
                     </div>
                     <div class="list-mid">
-                        <a th:href="@{/board/view/{id}(id=*{id})}">
+                        <a th:href="@{/community/view/{id}(id=*{id})}">
                             [[|[*{#strings.substring(category,0,2)}]*{subject}|]]
                         </a>
                     </div>

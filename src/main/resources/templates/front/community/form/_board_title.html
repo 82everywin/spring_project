@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="title">
   <h1 th:if="${board != null}">
-    <a th:href="@{/user/community/list/{bId}(bId=${board.bId})}" th:text="${board.boardNm}"></a>
+    <a th:href="@{/community/list/{bId}(bId=${board.bId})}" th:text="${board.boardNm}"></a>
   </h1>
 </th:block>
 </html>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/tymeleaf/layout"
-      layout:decorate="~{front/layouts/communityMain}">
+      layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content">
-    <th:block th:replace="~{front/community/_board_title::title}"></th:block>
+    <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
     <form name="frmSearch" method="get" th:object="${boardSearch}">
         <div class="sch_btn_wrap">
             <div class="sch_grp">
@@ -27,16 +27,16 @@
     </form>
     <div class="write_box">
         <div class="btn1">
-            <a th:href="@{/user/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
+            <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
         </div>
     </div>
     <nav class="menu_bar" >
         <ul class="menu_bar_list">
             <li th:each="board : ${boards}" th:object="${board}">
-                <a th:href="@{/board/list/{bid}(bid=${board.getBId()})}" th:text="*{bName}">Board1</a>
+                <a th:href="@{/community/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>
                 <ul class="sub_list">
                     <li th:each="category : ${board.getCategories()}">
-                        <a th:href="@{/board/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}" th:text="${category}">Board1_1</a>
+                        <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}" th:text="${category}">Board1_1</a>
                     </li>
                 </ul>
             </li>
@@ -52,7 +52,7 @@
                             <span class="list_num" th:text="*{#temporals.format(createdAt,'yyyy.MM.dd')}"></span>
                         </div>
                         <div class="list-mid">
-                            <a th:href="@{/user/community/view/{id}(id=*{id})}" th:text="*{subject}">
+                            <a th:href="@{/community/view/{id}(id=*{id})}" th:text="*{subject}">
 <!--                                [[|[*{#strings.substring(category,0,2)}]*{subject}|]]-->
                             </a>
                         </div>
@@ -75,6 +75,5 @@
         </section>
         </th:block>
     </form>
-    <th:block th:replace="~{front/commons/_pagination::pagination}"></th:block>
 </main>
 </html>

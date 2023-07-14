@@ -37,10 +37,10 @@
                     <label for="checkall"></label>
                     <!--bId를 선택하면 전부 체크-->
                 </th>
-                <th width="130">코드번호</th>
-                <th width="200">카테고리</th>
+                <th width="120">코드번호</th>
+                <th width="150">카테고리</th>
                 <th width="200">게시글 제목</th>
-                <th width="200">작성자명</th>
+                <th width="100">작성자명</th>
                 <th width="150">이메일</th>
                 <th width="150">작성일시</th>
                 <th width="150">수정일시</th>
@@ -54,28 +54,29 @@
                     <input type="checkbox" name="id" th:value="*{id}" th:id="${'id_' + status.index}">
                     <label th:for="${'id_' + status.index}"></label>
                 </td>
-                <td th:text="*{id}"></td>
-                <td th:text="*{category}"></td>
-                <td th:text="*{subject}"></td>
-                <td th:text="*{poster}"></td>
-                <td th:text="${email}"></td>
-                <td>/ [[#{board.datetime}]] : [[*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}]]</td>
-                <td>/ [[#{board.datetime}]] : [[*{#temporals.format(modifiedAt, 'yyyy.MM.dd HH:mm')}]]</td>
-                <td>[[#{board.hit}]] :
+                <td align="center" th:text="*{id}"></td>
+                <td align="center" th:text="*{category}"></td>
+                <td align="center" th:text="*{subject}"></td>
+                <td align="center" th:text="*{poster}"></td>
+                <td align="center" th:text="*{user.userEmail}"></td>
+                <td align="center">[[*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}]]</td>
+                <td align="center">[[*{#temporals.format(modifiedAt, 'yyyy.MM.dd HH:mm')}]]</td>
+                <td align="center">
                     <th:block th:if="*{hit < 1000}" th:text="*{hit}"></th:block>
                     <th:block th:unless="*{hit < 1000}" th:text="*{#numbers.formatInteger(hit, 3)}"></th:block>
                 </td>
-                <td>
-                    <a href="#">게시글 보기</a>
-                    <!-- 사용자 페이지 해당 게시글로 이동 -->
+                <td align="center">
+                    <button class="btn2" type="button">
+                        <a th:href="@{/community/view/{id}(id=*{id})}">게시글 보기</a>
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
         <div class="table-action">
-            <a th:href="@{/user/community/{id}/update(id=*{id})}" class="btn1">게시글 수정</a>
+            <a th:href="@{/community/{id}/update(id=*{id})}" class="btn2">게시글 수정</a>
             <button class="btn2" type="button" onclick="return confirm('정말 삭제하시겠습니까?');">
-                <a th:href="@{/user/community/delete/{id}(id=*{id})}">삭제하기</a>
+                <a th:href="@{/community/delete/{id}(id=*{id})}">삭제하기</a>
             </button>
         </div>
     </form>

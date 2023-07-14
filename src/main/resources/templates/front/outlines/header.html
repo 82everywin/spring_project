@@ -7,7 +7,7 @@
             <section class="left">
                 <a th:href="@{/study}" th:text="#{menus.study.create}" th:classappend="${menuCode} == 'study' ? 'on' : ''">스터디 만들기</a>
                 <a th:href="@{/study/list}" th:text="#{menus.study.join}" th:classappend="${menuCode} == 'study_list' ? 'on' : ''">스터디 함께해요</a>
-                <a th:href="@{/user/community}" th:text="#{menus.community}">커뮤니티</a>
+                <a th:href="@{/community}" th:text="#{menus.community}">커뮤니티</a>
             </section>
             <section class="right">
                 <form name='sSearch' method="get" th:action="@{/study/list}" autocomplete="off">
