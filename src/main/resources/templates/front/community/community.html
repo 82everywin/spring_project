@@ -17,24 +17,24 @@
                     <button type="submit">검색</button>
                 </div>
             </div> <!-- top_search -->
-<!--            <div class="write_box">-->
+<!--            <div>-->
 <!--                <div class="btn1">-->
 <!--                    <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>-->
 <!--                </div>-->
 <!--            </div>-->
-            <nav class="menu_bar">
-                <ul class="menu_bar_list">
-                    <li th:each="board : ${boards}" th:object="${board}">
-                        <a th:href="@{/community/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>
-                        <ul class="sub_list">
-                            <li th:each="category : ${board.getCategories()}">
-                                <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}"
-                                   th:text="${category}">Board1_1</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
+<!--            <nav class="board_menus">-->
+<!--                <ul class="board_menus_list">-->
+<!--                    <li th:each="board : ${boards}" th:object="${board}">-->
+<!--                        <a th:href="@{/community/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>-->
+<!--                        <ul class="sub_list">-->
+<!--                            <li th:each="category : ${board.getCategories()}">-->
+<!--                                <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}"-->
+<!--                                   th:text="${category}">Board1_1</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
 
             <form method="post">
                 <div class="userLists">

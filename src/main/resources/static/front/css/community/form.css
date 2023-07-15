@@ -1,0 +1,10 @@
+/** 업로드 이미지 기본 스타일 */
+.uploadedImages { display: flex; flex-wrap: wrap; align-items: center; }
+.uploadedImages .images { position: relative;  margin-right: 5px; margin-bottom: 5px; height: 100px; width: 100px; }
+.uploadedImages .images > .inner { position: absolute; top: 0; left: 0; width: 100px; height: 100px; z-index: 1; border: 1px solid #222; border-radius: 5px;  }
+
+.uploadedImages .remove { cursor: pointer; position: absolute; top: 0; right: 0; z-index: 10; font-size: 10px; background: #000; color: #fff; padding: 3px;  }
+.attachFiles { margin: 10px 0; }
+.attachFiles li { border-bottom: 1px solid #d5d5d5; padding: 10px; background: #f8f8f8; }
+.attachFiles li:first-of-type { border-top: 1px solid #d5d5d5; }
+.attachFiles .insert_editor, .attachFiles .remove { display: inline-block; background: #000; color: #fff; cursor: pointer; padding: 3px; margin-left: 5px; font-size: 10px; }

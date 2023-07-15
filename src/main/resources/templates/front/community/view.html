@@ -4,15 +4,15 @@
       layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content" th:object="${post}">
-    <section class="main_intro">
-        <div class="view_content_wrap">
-            <div class="post_wrap">
-                <div class="post_top">
-                    <h2 class="post_poster">
+    <section class="layout_width tab_content">
+        <div class="intro">
+            <div class="desc">
+                <div class="info_txt">
+                    <h2 class="headline">
                         <th:block th:text="*{user.userNickNm}"></th:block>
                     </h2> <!-- 제목 -->
                     <h1><span th:text="*{subject}"></span></h1>
-                    <div class="desc">
+                    <div class="info_txt">
                         <div class="info_txt">
                             <span>IP : [[*{ip}]]
                         </span>
@@ -30,15 +30,15 @@
                         </div>
                     </div> <!-- post_info -->
                 </div>
+                <div class="info_txt" th:utext="*{content}"></div>
+                <div class="apply_btn">
+                    <a th:href="@{/community/{id}/update(id=*{id})}">글수정</a>
+                    <a th:href="@{/community/delete/{id}(id=*{id})}">글삭제</a>
+                    <a th:href="@{/community/write/{bId}(bId=*{board.bId})}">글쓰기</a>
+                    <a th:href="@{/community/list/{bId}(bId=*{board.bId})}">글목록</a>
+                </div>
             </div> <!-- post_wrap -->
 
-            <div class="content" th:utext="*{content}"></div>
-            <div class="btns">
-                <a th:href="@{/community/{id}/update(id=*{id})}">글수정</a>
-                <a th:href="@{/community/delete/{id}(id=*{id})}">글삭제</a>
-                <a th:href="@{/community/write/{bId}(bId=*{board.bId})}">글쓰기</a>
-                <a th:href="@{/community/list/{bId}(bId=*{board.bId})}">글목록</a>
-            </div>
         </div> <!-- view_content_wrap -->
     </section>
 </main>

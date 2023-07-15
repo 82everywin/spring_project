@@ -3,60 +3,49 @@
       xmlns:layout="http://www.ultraq.net.nz/tymeleaf/layout"
       layout:decorate="~{front/layouts/main}">
 
-<main layout:fragment="content">
-    <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
-    <form name="frmSearch" method="get" th:object="${boardSearch}">
-        <div class="sch_btn_wrap">
-            <div class="sch_grp">
-                <select name="sopt">
-                    <option value="subject_content">제목+내용</option>
-                    <option value="subject">제목</option>
-                    <option value="content">내용</option>
-                    <option value="poster">글쓴이</option>
-                </select>
-            </div>
-            <div class="sch_box">
-                <div class="sch_bar">
-                    <input type="text" name="skey" placeholder="검색어 입력">
+<main layout:fragment="content" class="layout_width">
+    <form name="frmList" id="frmList" method="get" th:object="${boardSearch}">
+        <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
+        <section class="list_contents">
+            <div class="top_search">
+                <div class="search_box">
+                    <input type="text" name="skey" placeholder="게시글 검색">
+                    <button type="submit">검색</button>
                 </div>
-                <button class="sch_btn" type="submit">
-                    <i class="xi-search"></i>
-                </button>
             </div>
-        </div>
-    </form>
-    <div class="write_box">
-        <div class="btn1">
-            <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
-        </div>
-    </div>
-    <nav class="menu_bar" >
-        <ul class="menu_bar_list">
-            <li th:each="board : ${boards}" th:object="${board}">
-                <a th:href="@{/community/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>
-                <ul class="sub_list">
-                    <li th:each="category : ${board.getCategories()}">
-                        <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}" th:text="${category}">Board1_1</a>
+<!--        </section>-->
+<!--    </form>-->
+            <div class="btn1">
+                <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
+            </div>
+            <nav class="menu_bar">
+                <ul class="menu_bar_list">
+                    <li th:each="board : ${boards}" th:object="${board}">
+                        <a th:href="@{/community/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>
+                        <ul class="sub_list">
+                            <li th:each="category : ${board.getCategories()}">
+                                <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}"
+                                   th:text="${category}">Board1_1</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-            </li>
-        </ul>
-    </nav>
-    <form method="post">
-            <div class="userLists">
-                <ul>
-                    <li th:each="item : ${postList}" th:object="${item}">
-                        <div class="list-top">
-                            <span class="list_poster" th:text="*{poster}"></span>
-                            <span>·</span>
-                            <span class="list_num" th:text="*{#temporals.format(createdAt,'yyyy.MM.dd')}"></span>
-                        </div>
-                        <div class="list-mid">
-                            <a th:href="@{/community/view/{id}(id=*{id})}" th:text="*{subject}">
-<!--                                [[|[*{#strings.substring(category,0,2)}]*{subject}|]]-->
-                            </a>
-                        </div>
-                        <div class="list-bot">
+            </nav>
+            <form method="post">
+                <div class="community_items">
+                    <ul>
+                        <li th:each="item : ${postList}" th:object="${item}">
+                            <div class="list-top">
+                                <span class="list_poster" th:text="*{poster}"></span>
+                                <span>·</span>
+                                <span class="list_num" th:text="*{#temporals.format(createdAt,'yyyy.MM.dd')}"></span>
+                            </div>
+                            <div class="list-mid">
+                                <a th:href="@{/community/view/{id}(id=*{id})}" th:text="*{subject}">
+                                    <!--                                [[|[*{#strings.substring(category,0,2)}]*{subject}|]]-->
+                                </a>
+                            </div>
+                            <div class="list-bot">
                             <span class="bot-right">
                             <span class="viewCnt">
                                 <i class="xi-eye-o"></i>
@@ -67,13 +56,14 @@
                                 <span>1</span>
                             </span>
                         </span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                </div>
+                </th:block>
+            </form>
         </section>
-        </th:block>
     </form>
 </main>
 </html>

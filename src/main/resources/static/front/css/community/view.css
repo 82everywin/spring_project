@@ -1,0 +1,16 @@
+.body-community-view .tabs-wrap { height: 45px; }
+.body-community-view .tabs-wrap .tabs { display: flex; align-items: center; }
+.body-community-view .tabs-wrap .tabs > li { line-height: 1.47; letter-spacing: -.3px; font-size: 15px; font-weight: 500; height: 43px; line-height: 45px;  color: #abb0b5; border-bottom: 2px inset transparent; #abb0b5; margin-right: 25px; cursor: pointer; font-weight: bold; }
+.body-community-view .tabs-wrap .tabs > li.on { color: #000; border-color: #000; }
+.main_intro { height: 405px; background: #002333; }
+.main_intro > .inner { display: flex; align-items: center; padding: 35px 0; justify-content: space-between; }
+.main_intro > .inner > .banner { width: 473px; height: 308px; margin-right: 30px; }
+
+.main_intro > .inner > .desc { padding: 25px 0; flex-grow: 1; height: 308px; }
+.main_intro > .inner > .desc .category { line-height: 1.43; letter-spacing: -.3px;  font-size: 14px; color: #fff; font-weight: 500; white-space: pre; }
+.main_intro > .inner > .desc h1 { line-height: 1.5; letter-spacing: -.3px; color: #fff; font-weight: 700; font-size: 26px; word-break: break-word; padding: 0; margin: 0; margin-bottom: 40px;  }
+.main_intro > .inner > .desc .info_txt {font-weight: bold; line-height: 1.43; letter-spacing: -.3px;  font-size: 14px; color: #fff; text-decoration: underline; margin-bottom: 3px; }
+.main_intro > .inner > .desc .apply_btn { background: #00c471; color: #fff; padding: 0 16px; height: 48px; line-height: 1.47; font-size: 17px; letter-spacing: -.3px; line-height: 48px; font-weight: bold; width: 300px; border-radius: 5px; cursor: pointer; margin-top: 30px; text-align: center; }
+
+.body-community-view .tab_content { margin-top: 30px; }
+.body-community-view .tab_content h2 { border: 1px solid #00c471; color: #00c471; padding: 17px 20px; font-size: 17px; border-radius: 5px; }
