@@ -4,18 +4,21 @@
       layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content" class="layout_width">
-    <section class="list_contents">
+
+        <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
         <form name="frmList" id="frmList" method="get" th:object="${boardSearch}">
-            <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
-            <div class="top_search">
-                <div class="btn1">
-                    <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
+            <aside class="sideform" th:replace="~{front/community/form/_side::board_menus}"></aside>
+            <section class="list_contents">
+                <div class="top_search">
+                    <div class="btn1">
+                        <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
+                    </div>
+                    <div class="search_box">
+                        <input type="text" name="skey" placeholder="게시글 검색">
+                        <button type="submit">검색</button>
+                    </div>
                 </div>
-                <div class="search_box">
-                    <input type="text" name="skey" placeholder="게시글 검색">
-                    <button type="submit">검색</button>
-                </div>
-            </div>
+            </section>
         </form>
         <form method="post">
             <div class="community_items">
@@ -25,7 +28,7 @@
                                    th:text="${category}">Board1_1</a>
                             </span>
                 </div>
-                <div>
+                <div class="userLists">
                     <ul>
                         <li th:each="item : ${postList}" th:object="${item}">
                             <div class="list-top">
@@ -39,22 +42,23 @@
                                 </a>
                             </div>
                             <div class="list-bot">
-                            <span class="bot-right">
-                            <span class="viewCnt">
-                                <i class="xi-eye-o"></i>
-                                <span class="list_num" th:text="*{hit}"></span>
-                            </span>
-                            <span class="totalComments">
-                                <i class="xi-comment-o"></i>
-                                <span>1</span>
-                            </span>
-                        </span>
+                                <span class="bot-right">
+                                    <span class="viewCnt">
+                                        <i class="xi-eye-o"></i>
+                                        <span class="list_num" th:text="*{hit}"></span>
+                                    </span>
+                                    <span class="totalComments">
+                                        <i class="xi-comment-o"></i>
+                                        <span>1</span>
+                                    </span>
+                                </span>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
+
         </form>
-    </section>
+
 </main>
 </html>

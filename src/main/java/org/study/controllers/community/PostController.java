@@ -47,7 +47,7 @@ public class PostController {
         model.addAttribute("items", data.getContent());
 
         Page<Board> bId = boardConfigListService.gets(boardSearch);
-        model.addAttribute("boards", bId);
+        model.addAttribute("bId", bId);
 
         return "front/community/community";
     }
@@ -63,8 +63,12 @@ public class PostController {
                        Model model, @ModelAttribute BoardSearch boardSearch) {
         commonProcess(bId, "list", model);
 
+        Page<Board> bIda = boardConfigListService.gets(boardSearch);
+        model.addAttribute("bId", bIda);
+
         Board board = boardConfigInfoService.get(bId, "list");
         model.addAttribute("boards", board);
+        model.addAttribute("board", board);
         model.addAttribute("category", categoryName);
 
         // 카테고리별 조회하기

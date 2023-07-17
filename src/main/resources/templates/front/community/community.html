@@ -6,16 +6,24 @@
 <main layout:fragment="content" class="layout_width"> <!-- 원래 섹션 -->
     <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
     <form id="frmList" name="frmList" method="get" autocomplete="off" th:object="${boardSearch}">
-        <th:block th:replace="~{front/community/form/_side::board_menus}"></th:block>
+        <aside class="sideform" th:replace="~{front/community/form/_side::board_menus}"></aside>
         <section class="list_contents">
+            <h1>
+                <a th:href="@{/community}">전체 게시글</a>
+            </h1>
             <div class="top_search">
-                <h1>
-                    <a th:href="@{/community}">전체 게시글</a>
-                </h1>
+
                 <div class="search_box">
                     <input type="text" name="skey" placeholder="게시글 검색">
                     <button type="submit">검색</button>
                 </div>
+
+                <div>
+<!--                    <input type="text" name="skey" placeholder="글쓰기">-->
+                    <button type="submit" class="btn1 red" style="width: 80px; margin-right: 20px; ">글쓰기</button>
+                </div>
+
+
             </div> <!-- top_search -->
 <!--            <div>-->
 <!--                <div class="btn1">-->
