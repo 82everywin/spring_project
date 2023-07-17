@@ -39,7 +39,7 @@
             <form method="post">
                 <div class="userLists">
                     <ul>
-                        <li th:each="item : ${postList}" th:object="${item}">
+                        <li th:each="item : ${items}" th:object="${item}">
                             <div class="list-top">
                                 <span class="list_poster" th:text="*{poster}"></span>
                                 <span>·</span>

@@ -4,35 +4,28 @@
       layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content" class="layout_width">
-    <form name="frmList" id="frmList" method="get" th:object="${boardSearch}">
-        <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
-        <section class="list_contents">
+    <section class="list_contents">
+        <form name="frmList" id="frmList" method="get" th:object="${boardSearch}">
+            <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
             <div class="top_search">
+                <div class="btn1">
+                    <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
+                </div>
                 <div class="search_box">
                     <input type="text" name="skey" placeholder="게시글 검색">
                     <button type="submit">검색</button>
                 </div>
             </div>
-<!--        </section>-->
-<!--    </form>-->
-            <div class="btn1">
-                <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
-            </div>
-            <nav class="menu_bar">
-                <ul class="menu_bar_list">
-                    <li th:each="board : ${boards}" th:object="${board}">
-                        <a th:href="@{/community/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>
-                        <ul class="sub_list">
-                            <li th:each="category : ${board.getCategories()}">
+        </form>
+        <form method="post">
+            <div class="community_items">
+                <div class="menu_bar">
+                            <span th:each="category : ${board.getCategories()}">
                                 <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}"
                                    th:text="${category}">Board1_1</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-            <form method="post">
-                <div class="community_items">
+                            </span>
+                </div>
+                <div>
                     <ul>
                         <li th:each="item : ${postList}" th:object="${item}">
                             <div class="list-top">
@@ -60,10 +53,8 @@
                         </li>
                     </ul>
                 </div>
-                </div>
-                </th:block>
-            </form>
-        </section>
-    </form>
+            </div>
+        </form>
+    </section>
 </main>
 </html>

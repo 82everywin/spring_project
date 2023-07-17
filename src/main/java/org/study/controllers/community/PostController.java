@@ -18,6 +18,7 @@ import org.study.entities.board.Board;
 import org.study.entities.board.Post;
 import org.study.models.Community.*;
 import org.study.models.board.BoardConfigInfoService;
+import org.study.models.board.BoardConfigListService;
 import org.study.models.board.BoardNotAllowAccessException;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.List;
 public class PostController {
 
     private final BoardConfigInfoService boardConfigInfoService;
+    private final BoardConfigListService boardConfigListService;
     private final PostInfoService infoService;
     private final PostSaveService saveService;
     private final PostListService listService;
@@ -40,9 +42,12 @@ public class PostController {
     private Board board; // 게시판 설정
 
     @GetMapping
-    public String index(@ModelAttribute CommunitySearch communitySearch, Model model) {
+    public String index(@ModelAttribute CommunitySearch communitySearch, Model model, BoardSearch boardSearch) {
         Page<Post> data = allListService.gets(communitySearch);
         model.addAttribute("items", data.getContent());
+
+        Page<Board> bId = boardConfigListService.gets(boardSearch);
+        model.addAttribute("boards", bId);
 
         return "front/community/community";
     }
@@ -59,7 +64,7 @@ public class PostController {
         commonProcess(bId, "list", model);
 
         Board board = boardConfigInfoService.get(bId, "list");
-        model.addAttribute("board", board);
+        model.addAttribute("boards", board);
         model.addAttribute("category", categoryName);
 
         // 카테고리별 조회하기

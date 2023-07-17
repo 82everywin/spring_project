@@ -137,8 +137,20 @@ window.addEventListener("DOMContentLoaded", function() {
     }
     /** 전체 선택 토글 처리 E */
 
-});
+        try {
+            CKEDITOR.replace("content", {
+                height: 350
+            });
+        } catch (e) {}
 
+    /** 게시판 카테고리 이동 처리 */
+        const bIdEls = document.querySelectorAll("#frmList input[name='bId']");
+        for (const el of bIdEls) {
+            el.addEventListener("click", function() {
+                frmList.submit();
+            });
+        }
+});
 
 /** mypage - qna 접었다 펼치는 js  -> 자꾸 다시 혼자 접혀요.. */   
 /*

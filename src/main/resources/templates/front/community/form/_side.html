@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<aside th:fragment="board_menus">
-    <ul th:if="${board != null}">
-        <li th:each="board : ${boards}" th:object="${board}">
-            <a th:href="@{/board/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>
+<th:block th:fragment="board_menus">
+    <ul th:if="${boards != null}">
+        <li th:each="board, status : ${boards}" th:object="${board}">
+<!--            <a style="color : red;" th:href="@{/community/list/{bid}(bid=${board.getBId()})}" th:text="*{boardNm}">Board1</a>-->
+            <input type="radio" name="bId" th:value="*{bId}" th:field="${communitySearch.bId}" th:id="${'bId_' + status.index}">
+            <label th:for="${'bId_' + status.index}">[[*{boardNm}]]</label>
         </li>
     </ul>
-</aside>
+</th:block>
 </html>
