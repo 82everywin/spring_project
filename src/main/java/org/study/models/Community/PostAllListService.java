@@ -31,22 +31,13 @@ public class PostAllListService {
         limit = limit < 1 ? 20 : limit;
 
         /** 검색 조건 처리 S */
-        String sopt = communitySearch.getSopt();
         String skey = communitySearch.getSkey();
-        if (sopt != null && !sopt.isBlank() && skey != null && !skey.isBlank()) {
-            sopt = sopt.trim(); // 공백 제거
-            skey = skey.trim(); // 공백 제거
 
-            if (sopt.equals("subject_content")) {
-                builder.and(post.subject.contains(skey))
-                        .or(post.content.contains(skey));
-            } else if (sopt.equals("subject")) {
-                builder.and(post.subject.contains(skey));
-            } else if (sopt.equals("content")) {
-                builder.and(post.content.contains(skey));
-            } else if (sopt.equals("poster")) {
-                builder.and(post.poster.contains(skey));
-            }
+        if (skey != null && !skey.isBlank()) {
+            skey = skey.trim();
+            builder.and(post.subject.contains(skey))
+                    .or(post.content.contains(skey))
+                    .or(post.poster.contains(skey));
         }
         /** 검색 조건 처리 E */
 

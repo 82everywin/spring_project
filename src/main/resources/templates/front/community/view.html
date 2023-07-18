@@ -2,44 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/tymeleaf/layout"
       layout:decorate="~{front/layouts/main}">
-
-<main layout:fragment="content" th:object="${post}">
-    <section class="layout_width tab_content">
-        <div class="intro">
-            <div class="desc">
-                <div class="info_txt">
-                    <h2 class="headline">
-                        <th:block th:text="*{user.userNickNm}"></th:block>
-                    </h2> <!-- 제목 -->
-                    <h1><span th:text="*{subject}"></span></h1>
-                    <div class="info_txt">
-                        <div class="info_txt">
+<main layout:fragment="content" th:object="${post}" class="layout_width">
+    <form>
+        <aside class="sideform" th:replace="~{front/community/form/_side::board_menus}"></aside>
+        <section class="list_contenta" style="padding: 30px;">
+            <h2 class="nickname">
+                <th:block th:text="*{user.userNickNm}"></th:block>
+            </h2>
+            <div class="ipCreateDt">
                             <span>IP : [[*{ip}]]
                         </span>
-                            <span>[[*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}]]</span>
-                        </div>
-                        <div class="post_info_right">
-                        <span>
-                            조회수 :
-                <th:block th:if="*{hit < 1000}" th:text="*{hit}"></th:block>
-                <th:block th:unless="*{hit < 1000}" th:text="*{#numbers.formatInteger(hit, 3)}"></th:block>
-                        </span>
-                            <span>
+                <span>[[*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}]]</span>
+            </div>
+            <div class="hitGood">
+                <span>
+                    조회수 :
+                    <th:block th:if="*{hit < 1000}" th:text="*{hit}"></th:block>
+                    <th:block th:unless="*{hit < 1000}" th:text="*{#numbers.formatInteger(hit, 3)}"></th:block>
+                </span>
+                <span>
                             | 좋아요 1
-                        </span>
-                        </div>
-                    </div> <!-- post_info -->
-                </div>
-                <div class="info_txt" th:utext="*{content}"></div>
-                <div class="apply_btn">
-                    <a th:href="@{/community/{id}/update(id=*{id})}">글수정</a>
-                    <a th:href="@{/community/delete/{id}(id=*{id})}">글삭제</a>
-                    <a th:href="@{/community/write/{bId}(bId=*{board.bId})}">글쓰기</a>
-                    <a th:href="@{/community/list/{bId}(bId=*{board.bId})}">글목록</a>
-                </div>
-            </div> <!-- post_wrap -->
-
-        </div> <!-- view_content_wrap -->
-    </section>
+                </span>
+            </div>
+            <h1 class="sub"><span class="subject" th:text="*{subject}"></span></h1>
+            </div>
+            <div class="content" th:utext="*{content}"></div>
+            <div class="move">
+                <a class="first" th:href="@{/community/{id}/update(id=*{id})}">글수정</a>
+                <a th:href="@{/community/delete/{id}(id=*{id})}">글삭제</a>
+                <a th:href="@{/community/write/{bId}(bId=*{board.bId})}">글쓰기</a>
+                <a th:href="@{/community/list/{bId}(bId=*{board.bId})}">글목록</a>
+            </div>
+        </section>
+    </form>
 </main>
 </html>

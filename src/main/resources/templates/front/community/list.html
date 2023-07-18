@@ -4,44 +4,50 @@
       layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content" class="layout_width">
+    <form name="frmList" id="frmList" method="get" th:object="${boardSearch}">
+        <aside class="sideform" th:replace="~{front/community/form/_side::board_menus}"></aside>
+        <section class="list_contents">
+            <h1 class="list_h1">
+                <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
+            </h1>
 
-        <th:block th:replace="~{front/community/form/_board_title::title}"></th:block>
-        <form name="frmList" id="frmList" method="get" th:object="${boardSearch}">
-            <aside class="sideform" th:replace="~{front/community/form/_side::board_menus}"></aside>
-            <section class="list_contents">
-                <div class="top_search">
-                    <div class="btn1">
+            <div class="cate_menu">
+                <span class="first">
+                    <a th:href="@{/community/list/{bId}(bId=${board.bId})}">전체</a>
+                </span>
+                <span th:each="category : ${board.getCategories()}">
+                    <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}" th:text="${category}"></a>
+                </span>
+            </div>
+
+            <div class="top_search">
+
+                <div class="search_box">
+                    <input type="text" name="skey" th:field="*{skey}" placeholder="게시글 검색">
+                    <button type="submit">검색</button>
+                </div>
+
+                <div>
+                    <button type="button" class="btn1 red" style="width: 80px; margin-right: 20px;">
                         <a th:href="@{/community/write/{bId}(bId=${board.bId})}">글쓰기</a>
-                    </div>
-                    <div class="search_box">
-                        <input type="text" name="skey" placeholder="게시글 검색">
-                        <button type="submit">검색</button>
-                    </div>
+                    </button>
                 </div>
-            </section>
-        </form>
-        <form method="post">
-            <div class="community_items">
-                <div class="menu_bar">
-                            <span th:each="category : ${board.getCategories()}">
-                                <a th:href="@{/community/list/{bid}?category={cate}(bid=${board.getBId()}, cate=${category})}"
-                                   th:text="${category}">Board1_1</a>
-                            </span>
-                </div>
-                <div class="userLists">
-                    <ul>
-                        <li th:each="item : ${postList}" th:object="${item}">
-                            <div class="list-top">
-                                <span class="list_poster" th:text="*{poster}"></span>
-                                <span>·</span>
-                                <span class="list_num" th:text="*{#temporals.format(createdAt,'yyyy.MM.dd')}"></span>
-                            </div>
-                            <div class="list-mid">
-                                <a th:href="@{/community/view/{id}(id=*{id})}" th:text="*{subject}">
-                                    <!--                                [[|[*{#strings.substring(category,0,2)}]*{subject}|]]-->
-                                </a>
-                            </div>
-                            <div class="list-bot">
+            </div>
+
+            <div class="userLists">
+                <ul>
+                    <li th:each="item : ${postList}" th:object="${item}">
+                        <div class="list-top">
+                            <span class="list_poster" th:text="*{poster}"></span>
+                            <span>·</span>
+                            <span class="list_num" th:text="*{#temporals.format(createdAt,'yyyy.MM.dd')}"></span>
+                        </div>
+                        <div class="list-mid">
+                            <a th:href="@{/community/view/{id}(id=*{id})}" th:text="*{subject}">
+                                <!--                                [[|[*{#strings.substring(category,0,2)}]*{subject}|]]-->
+                            </a>
+                        </div>
+                        <div class="list-bot">
                                 <span class="bot-right">
                                     <span class="viewCnt">
                                         <i class="xi-eye-o"></i>
@@ -52,13 +58,12 @@
                                         <span>1</span>
                                     </span>
                                 </span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-
-        </form>
-
+            <th:block th:replace="~{commons/pagination::pagination}"></th:block>
+        </section>
+    </form>
 </main>
 </html>

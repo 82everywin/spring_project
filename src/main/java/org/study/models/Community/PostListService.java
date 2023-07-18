@@ -35,33 +35,13 @@ public class PostListService {
         page = page < 1 ? 1 : page;
         pageSize = pageSize < 1 ? 20 : pageSize;
 
-        /** 분류 검색 S */
-        if (bId != null && !bId.isBlank()){
-            builder.and(board.bId.eq(bId));
-        }
-
-        if (category != null && !category.isBlank()) {
-            builder.and(post.category.eq(category));
-        }
-        /** 분류 검색 E */
-
-        String sopt = boardSearch.getSopt();
         String skey = boardSearch.getSkey();
 
-        if (sopt != null && !sopt.isBlank() && skey != null && !skey.isBlank()) {
-            sopt = sopt.trim();
+        if (skey != null && !skey.isBlank()) {
             skey = skey.trim();
-
-            if (sopt.equals("subject_content")) {
-                builder.and(post.subject.contains(skey))
-                        .or(post.content.contains(skey));
-            } else if (sopt.equals("subject")) {
-                builder.and(post.subject.contains(skey));
-            } else if (sopt.equals("content")) {
-                builder.and(post.content.contains(skey));
-            } else if (sopt.equals("poster")) {
-                builder.and(post.poster.contains(skey));
-            }
+            builder.and(post.subject.contains(skey))
+                    .or(post.content.contains(skey))
+                    .or(post.poster.contains(skey));
         }
 
         Pageable pageable = PageRequest.of(page -1, pageSize, Sort.by(Sort.Order.desc("createdAt")));

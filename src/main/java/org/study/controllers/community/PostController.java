@@ -49,6 +49,10 @@ public class PostController {
         Page<Board> bId = boardConfigListService.gets(boardSearch);
         model.addAttribute("bId", bId);
 
+        String url = request.getRequestURI();
+        Pagination pagination = new Pagination(data, url);
+        model.addAttribute("pagination", pagination);
+
         return "front/community/community";
     }
 
@@ -149,7 +153,7 @@ public class PostController {
     }
 
     @GetMapping("/view/{id}")
-    public String view(@PathVariable Long id, Model model) {
+    public String view(@PathVariable Long id, Model model, BoardSearch boardSearch) {
         Post post = infoService.get(id);
         board = post.getBoard();
 
@@ -159,6 +163,9 @@ public class PostController {
         model.addAttribute("board", board);
         model.addAttribute("addCss", new String[] { "community/view" });
         model.addAttribute("addScript", new String[] { "community/view" });
+
+        Page<Board> bId = boardConfigListService.gets(boardSearch);
+        model.addAttribute("bId", bId);
 
         updateHitService.update(id); // 게시글 조회수 업데이트
 
@@ -223,12 +230,13 @@ public class PostController {
      * - 회원 : 작성한 회원
      * - 관리자 : 가능
      */
-    public void updateDeletePossibleCheck(Post post) {
+    public void updateDeletePossibleCheck(Post post, String mode) {
+        mode = mode == null ? "board" : mode;
         if (userUtils.isAdmin()) { // 관리자는 무조건 가능
             return;
         }
 
-        if (userUtils.isLogin() &&
+        if (!userUtils.isLogin() &&
                 userUtils.getUser().getUserNo() != post.getUser().getUserNo()) {
             throw new BoardNotAllowAccessException();
         }
@@ -237,5 +245,9 @@ public class PostController {
     public void updateDeletePossibleCheck(Long id) {
         Post post = infoService.get(id, "update");
         updateDeletePossibleCheck(post);
+    }
+
+    public void updateDeletePossibleCheck(Post post) {
+        updateDeletePossibleCheck(post, null);
     }
 }

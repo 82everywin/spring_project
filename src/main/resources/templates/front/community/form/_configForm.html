@@ -9,9 +9,9 @@
             <div class="errors" th:each="err : ${#fields.errors('poster')}" th:text="${err}"></div>
         </dd>
     </dl>
-    <dl>
+    <dl th:if="${board.categories != null}">
         <dt>카테고리</dt>
-        <dd th:if="${board.categories != null}">
+        <dd>
             <div>
                 <th:block th:each="category, status : ${board.categories}">
                     <input type="radio" name="category" th:value="${category}" th:id="${'category_' + status.index}">
