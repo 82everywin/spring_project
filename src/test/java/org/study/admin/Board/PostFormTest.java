@@ -25,8 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * '게시판 관리 - 게시판 등록'에 해당하는 테스트 클래스 입니다.
- * 파일명 : "BoardConfigService"
- * 메서드 : config()
+ * 파일명 : "BoardConfigSaveService"
+ * 메서드 : save()
  *
  */
 @SpringBootTest
@@ -56,7 +56,6 @@ public class PostFormTest {
                 .rowsPerPage(20)
                 .useViewList(true)
                 .category("QnA Notice")
-                .viewType(ViewType.USER.toString())
                 .useEditor(true)
                 .afterWriteTarget(AfterWriteTarget.VIEW.toString())
                 .useComment(true)
@@ -216,7 +215,6 @@ public class PostFormTest {
                 .param("rowsPerPage", String.valueOf(boardForm.getRowsPerPage()))
                 .param("useViewList", String.valueOf(boardForm.isUseViewList()))
                 .param("category", boardForm.getCategory())
-                .param("viewType", boardForm.getViewType())
                 .param("useEditor", String.valueOf(boardForm.isUseEditor()))
                 .param("afterWriteTarget", boardForm.getAfterWriteTarget())
                 .param("useComment", String.valueOf(boardForm.isUseComment()))

@@ -23,7 +23,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         session.setAttribute("userInfo", userInfo);
 
 
-        String url = request.getContextPath() + "/index";
+        String url = request.getContextPath();
         response.sendRedirect(url);
     }
 }
