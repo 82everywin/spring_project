@@ -1,6 +1,7 @@
 package org.study.models.board;
 
 import com.querydsl.core.BooleanBuilder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,10 +16,10 @@ import org.study.repositories.board.BoardRepository;
 import static org.springframework.data.domain.Sort.Order.desc;
 
 @Service
+@RequiredArgsConstructor
 public class BoardConfigListService {
 
-    @Autowired
-    private BoardRepository repository;
+    private  final BoardRepository repository;
 
     public Page<Board> gets(BoardSearch boardSearch) {
         QBoard board = QBoard.board;

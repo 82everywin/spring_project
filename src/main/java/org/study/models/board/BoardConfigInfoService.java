@@ -1,5 +1,6 @@
 package org.study.models.board;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.study.commons.UserUtils;
@@ -9,10 +10,11 @@ import org.study.entities.board.Board;
 import org.study.repositories.board.BoardRepository;
 
 @Service
+@RequiredArgsConstructor
 public class BoardConfigInfoService { // 조회
 
-    @Autowired
-    private BoardRepository repository;
+
+    private final BoardRepository repository;
     @Autowired
     private UserUtils userUtils;
 

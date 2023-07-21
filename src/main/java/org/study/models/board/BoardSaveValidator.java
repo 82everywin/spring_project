@@ -1,5 +1,6 @@
 package org.study.models.board;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -14,10 +15,11 @@ import org.study.repositories.board.BoardRepository;
  *
  */
 @Component
+@RequiredArgsConstructor
 public class BoardSaveValidator implements ServiceValidator<BoardForm>, RequiredCheckValidator {
 
-    @Autowired
-    private BoardRepository repository;
+
+    private final BoardRepository repository;
 
     @Override
     public void check(BoardForm boardForm) {

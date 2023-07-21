@@ -3,6 +3,7 @@ package org.study.controllers.admin.board;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,17 +24,17 @@ import java.util.List;
 
 @Controller
 @RequestMapping("admin/board")
+@RequiredArgsConstructor
 public class BoardController {
-    @Autowired
+
     private HttpServletRequest request;
-    @Autowired
-    private BoardConfigSaveService saveService;
-    @Autowired
-    private BoardConfigInfoService infoService;
-    @Autowired
-    private BoardConfigListService listService;
-    @Autowired
-    private BoardConfigDeleteService deleteService;
+
+    private final BoardConfigSaveService saveService;
+
+    private final BoardConfigInfoService infoService;
+    private final BoardConfigListService listService;
+
+    private final BoardConfigDeleteService deleteService;
 
     /** <게시판관리> 클릭하면 나오는 페이지 == 게시판목록 */
     @GetMapping

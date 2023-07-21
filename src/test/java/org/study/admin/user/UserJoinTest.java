@@ -58,7 +58,7 @@ public class UserJoinTest {
         userJoin.setUserNickNm("뚜비");
         userJoin.setGender("MAN");
         userJoin.setBirth("2000-08-02"); // service 를 통해 들어가는건 validate 걸친 예
-        userJoin.setCellphone("01000110022"); //생일과 마찬가지
+        userJoin.setCellPhone("01000110022"); //생일과 마찬가지
         userJoin.setTermsAgree(true);
 
     }

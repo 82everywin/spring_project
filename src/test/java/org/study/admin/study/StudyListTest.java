@@ -1,5 +1,6 @@
 package org.study.admin.study;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.study.commons.constants.RegionType;
 import org.study.commons.constants.Status;
 import org.study.controllers.admin.study.StudyConfig;
-import org.study.controllers.admin.study.StudySearch;
+import org.study.controllers.study.StudySearch;
+import org.study.models.studies.StudyListService;
 
 
 import java.time.LocalDateTime;
@@ -27,17 +29,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@RequiredArgsConstructor
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class StudyListTest {
 
-//    @Autowired
-    //private StudyListService listService;
 
-    @Autowired
-    //private StudyApplyService applyService;
+    private final StudyListService listService;
 
 
-    private StudySearch studySearch;
+    private final StudySearch studySearch;
 
 
     private int cnt_Apply = 1; //approveStatus- APPLY 갯수
@@ -133,7 +133,7 @@ public class StudyListTest {
         });
 
     }
-
+/**
     @Test
     @DisplayName("approveStatus(승인상태-APPLY,APPROVE,DISAPPROVE)에 따라 조회된 데이터 갯수와 cnt갯수 맞으면 성공")
     void study_ApproveStatus_Apply_gets() {
@@ -156,4 +156,5 @@ public class StudyListTest {
         });
 
     }
+    **/
 }

@@ -1,5 +1,6 @@
 package org.study.models.board;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -11,9 +12,10 @@ import org.study.entities.board.Board;
 import org.study.repositories.board.BoardRepository;
 
 @Service
+@RequiredArgsConstructor
 public class BoardConfigSaveService {
-    @Autowired
-    private BoardRepository boardRepository;
+
+    private final BoardRepository boardRepository;
 
     public void save(BoardForm boardForm) {
         save(boardForm, null);

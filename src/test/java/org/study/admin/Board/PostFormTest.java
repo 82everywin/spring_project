@@ -1,5 +1,6 @@
 package org.study.admin.Board;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
+@RequiredArgsConstructor
 @TestPropertySource(locations="classpath:application-test.properties")
 public class PostFormTest {
 
@@ -40,11 +42,11 @@ public class PostFormTest {
 
     private BoardForm boardForm;
 
-    @Autowired
-    private BoardRepository repository;
 
-    @Autowired
-    private BoardConfigSaveService service;
+    private final BoardRepository repository;
+
+
+    private final BoardConfigSaveService service;
 
     @BeforeEach
     void config() {
@@ -90,7 +92,7 @@ public class PostFormTest {
     /** 유효성 검사 S */
     @Test
     @DisplayName("필수 입력 값 체크 -예외메세지발생")
-    void boardConfig_Essential(){
+    void boardConfig_Essential() {
         // 발생 경우 수
         // bId , boardNm, rowsPerPage 에 대한 필수 입력 값 체크
         // null, isBlank
@@ -146,112 +148,114 @@ public class PostFormTest {
                 boardForm.setRowsPerPage(rowsPerPage);
                 includedWord = "게시판 이름";
 
-            BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
+                BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
+                    service.save(boardForm);
+                });
+                System.out.println(field);
+                System.out.println(thrown.getMessage());
+
+                // 예외 메세지에 핵심 키워드가 포함되어 있는지 체크
+                assertTrue(thrown.getMessage().contains(includedWord));
+                // 상태 코드 검증(HttpStatus.BAD_REQUEST)
+                assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatus());
+            }
+            /** NULL 체크 E */
+        }
+
+        //validator Test
+        /**
+         * 유효성 검사 추가 (오류메세지가 제대로 나오는지에 대한 체크는 통합테스트에서 진행)
+         * 1. 게시판 아이디가 중복되는지 체크
+         * 2. rowsPerPage : 최소 10개 부터 되는지 체크
+         * 3. category: '\n' 줄바꿈울 기준으로 인식 되는지
+         */
+
+        /** 1. 게시판 아이디가 중복되는지 체크 */
+    }
+        @Test
+        @DisplayName("bId 중복 등록 시 DuplicateCateBIdException 발생 여부")
+        void DuplicateCateBIdTest () {
+            // 테스트 전 분류 등록
+            service.save(boardForm);
+
+            assertThrows(DuplicateBoardConfigException.class, () -> {
+                // 중복 분류로 등록
                 service.save(boardForm);
             });
-            System.out.println(field);
-            System.out.println(thrown.getMessage());
-
-            // 예외 메세지에 핵심 키워드가 포함되어 있는지 체크
-            assertTrue(thrown.getMessage().contains(includedWord));
-            // 상태 코드 검증(HttpStatus.BAD_REQUEST)
-            assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatus());
         }
-        /** NULL 체크 E */
-    }
 
-    //validator Test
-    /**
-     * 유효성 검사 추가 (오류메세지가 제대로 나오는지에 대한 체크는 통합테스트에서 진행)
-     * 1. 게시판 아이디가 중복되는지 체크
-     * 2. rowsPerPage : 최소 10개 부터 되는지 체크
-     * 3. category: '\n' 줄바꿈울 기준으로 인식 되는지 
-     */
+        /** 2. rowsPerPage : 최소 10부터 되는지 체크 */
+        @Test
+        @DisplayName("rowsPerPage : 최소 10부터 되는지 체크")
+        void rowsPerPageMinTest () {
+            assertThrows(BadRequestException.class, () -> {
+                boardForm.setRowsPerPage(9);
+                service.save(boardForm);
+            });
+            System.out.println(boardForm);
+        }
 
-    /** 1. 게시판 아이디가 중복되는지 체크 */
-    @Test
-    @DisplayName("bId 중복 등록 시 DuplicateCateBIdException 발생 여부")
-    void DuplicateCateBIdTest() {
-        // 테스트 전 분류 등록
-        service.save(boardForm);
-
-        assertThrows(DuplicateBoardConfigException.class, () -> {
-           // 중복 분류로 등록
-           service.save(boardForm);
-        });
-    }
-
-    /** 2. rowsPerPage : 최소 10부터 되는지 체크 */
-    @Test
-    @DisplayName("rowsPerPage : 최소 10부터 되는지 체크")
-    void rowsPerPageMinTest() {
-        assertThrows(BadRequestException.class, () -> {
-            boardForm.setRowsPerPage(9);
+        /** 3. category: '\n' 줄바꿈울 기준으로 인식 되는지 */
+        @Test
+        @DisplayName("category: '\n' 줄바꿈울 기준으로 인식 되는지")
+        void categoryEnterTest () {
+            // textarea, split
+            boardForm.setCategory("분류1\n분류2\n분류3\n");
             service.save(boardForm);
-        });
-        System.out.println(boardForm);
-    }
+            System.out.println(boardForm);
+        }
 
-    /** 3. category: '\n' 줄바꿈울 기준으로 인식 되는지 */
-    @Test
-    @DisplayName("category: '\n' 줄바꿈울 기준으로 인식 되는지")
-    void categoryEnterTest() {
-        // textarea, split
-        boardForm.setCategory("분류1\n분류2\n분류3\n");
-        service.save(boardForm);
-        System.out.println(boardForm);
-    }
+        /**
+         * 통합 테스트
+         */
+        @Test
+        @DisplayName("성공적으로 등록완료되면 /admin/board 이동")
+        void configSuccessRedirectTest () throws Exception {
+            mockMvc.perform(post("/admin/board")
+                            .param("bId", boardForm.getBId())
+                            .param("boardNm", boardForm.getBoardNm())
+                            .param("isUse", String.valueOf(boardForm.isUse()))
+                            .param("rowsPerPage", String.valueOf(boardForm.getRowsPerPage()))
+                            .param("useViewList", String.valueOf(boardForm.isUseViewList()))
+                            .param("category", boardForm.getCategory())
+                            .param("useEditor", String.valueOf(boardForm.isUseEditor()))
+                            .param("afterWriteTarget", boardForm.getAfterWriteTarget())
+                            .param("useComment", String.valueOf(boardForm.isUseComment()))
+                            .param("skin", boardForm.getSkin())
+                            .param("isReview", String.valueOf(boardForm.isReview())).with(csrf()))
+                    .andExpect(redirectedUrl("/admin/board"));
 
-    /**
-     * 통합 테스트
-     */
-    @Test
-    @DisplayName("성공적으로 등록완료되면 /admin/board 이동")
-    void configSuccessRedirectTest() throws Exception {
-        mockMvc.perform(post("/admin/board")
-                .param("bId", boardForm.getBId())
-                .param("boardNm", boardForm.getBoardNm())
-                .param("isUse", String.valueOf(boardForm.isUse()))
-                .param("rowsPerPage", String.valueOf(boardForm.getRowsPerPage()))
-                .param("useViewList", String.valueOf(boardForm.isUseViewList()))
-                .param("category", boardForm.getCategory())
-                .param("useEditor", String.valueOf(boardForm.isUseEditor()))
-                .param("afterWriteTarget", boardForm.getAfterWriteTarget())
-                .param("useComment", String.valueOf(boardForm.isUseComment()))
-                .param("skin", boardForm.getSkin())
-                .param("isReview", String.valueOf(boardForm.isReview())).with(csrf()))
-                .andExpect(redirectedUrl("/admin/board"));
+        }
 
-    }
+        @Test
+        @DisplayName("필수항목 누락 시 Bean Validation 검증 체크")
+        void checkResponseTest () throws Exception {
+            String body = mockMvc.perform(post("/admin/board").with(csrf()))
+                    .andReturn().getResponse().getContentAsString();
 
-    @Test
-    @DisplayName("필수항목 누락 시 Bean Validation 검증 체크")
-    void checkResponseTest() throws Exception {
-        String body = mockMvc.perform(post("/admin/board").with(csrf()))
-                .andReturn().getResponse().getContentAsString();
+            // 게시판아이디 검증(bId)
+            assertTrue(body.contains("게시판 아이디"));
 
-        // 게시판아이디 검증(bId)
-        assertTrue(body.contains("게시판 아이디"));
+            // 게시판이름 검증(boardNm)
+            assertTrue(body.contains("게시판 이름"));
 
-        // 게시판이름 검증(boardNm)
-        assertTrue(body.contains("게시판 이름"));
+            // 페이지 당 게시글 수 검증(rowsPerPage)
+            assertTrue(body.contains("페이지 당 게시글 수"));
+        }
 
-        // 페이지 당 게시글 수 검증(rowsPerPage)
-        assertTrue(body.contains("페이지 당 게시글 수"));
-    }
+        @Test
+        @DisplayName("중복 등록 Bean Validation 검증 체크")
+        void duplicateBIdCheckResponseTest () throws Exception {
+            service.save(boardForm);
 
-    @Test
-    @DisplayName("중복 등록 Bean Validation 검증 체크")
-    void duplicateBIdCheckResponseTest() throws Exception {
-        service.save(boardForm);
+            String body = mockMvc.perform(post("/admin/board")
+                            .param("bId", boardForm.getBId())
+                            .param("boardNm", boardForm.getBoardNm())
+                            .param("rowsPerPage", String.valueOf(boardForm.getRowsPerPage())).with(csrf()))
+                    .andReturn().getResponse().getContentAsString();
 
-        String body = mockMvc.perform(post("/admin/board")
-                .param("bId", boardForm.getBId())
-                .param("boardNm", boardForm.getBoardNm())
-                .param("rowsPerPage", String.valueOf(boardForm.getRowsPerPage())).with(csrf()))
-                .andReturn().getResponse().getContentAsString();
+            String message = MessageBundle.getMessage("Duplicate.boardConfig.bId");
+            assertTrue(body.contains(message));
+        }
 
-        String message = MessageBundle.getMessage("Duplicate.boardConfig.bId");
-        assertTrue(body.contains(message));
-    }
 }

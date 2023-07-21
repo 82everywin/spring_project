@@ -48,7 +48,7 @@ CsReportTest {
         userJoin.setUserNm("홍다경");
         userJoin.setUserEmail("test2@naver.com");
         userJoin.setUserPw("aA!1234567");
-        userJoin.setCellphone("010-1234-5678");
+        userJoin.setCellPhone("010-1234-5678");
         userJoin.setUserNickNm("밤빵");
         userJoin.setBirth("10/20");
 
