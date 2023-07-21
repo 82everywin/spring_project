@@ -156,7 +156,7 @@ main.layout_width { padding-top:20px; max-width: 1140px; min-width: 1000px; marg
 /** 커뮤니티 게시글 스타일 */
 .body-community-view .tabs-wrap { height: 45px; }
 .body-community-view .tabs-wrap .tabs { display: flex; align-items: center; }
-.body-community-view .tabs-wrap .tabs > li { line-height: 1.47; letter-spacing: -.3px; font-size: 15px; font-weight: 500; height: 43px; line-height: 45px;  color: #abb0b5; border-bottom: 2px inset transparent; #abb0b5; margin-right: 25px; cursor: pointer; font-weight: bold; }
+.body-community-view .tabs-wrap .tabs > li { line-height: 1.47; letter-spacing: -.3px; font-size: 15px; font-weight: 500; height: 43px; line-height: 45px;  color: #abb0b5; border-bottom: 2px inset transparent;color: #abb0b5; margin-right: 25px; cursor: pointer; font-weight: bold; }
 .body-community-view .tabs-wrap .tabs > li.on { color: #000; border-color: #000; }
 .main_intro { height: 405px; background: #002333; }
 .main_intro > .inner { display: flex; align-items: center; padding: 35px 0; justify-content: space-between; }
